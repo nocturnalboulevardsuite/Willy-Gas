@@ -1,0 +1,17 @@
+# Tema claro fijo: alto contraste aunque el celular esté en modo oscuro
+[theme]
+base = "light"
+primaryColor = "#D9480F"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#EEF1F6"
+textColor = "#14213D"
+
+[client]
+toolbarMode = "minimal"
+showSidebarNavigation = false
+
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false
