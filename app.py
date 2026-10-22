@@ -906,7 +906,7 @@ def encabezado() -> None:
     logo = 11 if 11 in tamanos else tamanos[0]
     html_limpio(f"""
         <div class='marca'>{img_cilindro(logo, alto=54)}
-          <div><div class='nombre'>Willy Gas</div>
+          <div><div class='nombre'>Gas Willy</div>
           <p class='fecha-hoy'>{fecha_larga(hoy())}</p></div>
         </div>""")
 
@@ -1397,7 +1397,7 @@ def vista_precios(todos: list[dict]) -> None:
         st.download_button(
             "Descargar respaldo (Excel)",
             data=csv_respaldo(todos),
-            file_name=f"willy_gas_{hoy().isoformat()}.csv",
+            file_name=f"gas_willy_{hoy().isoformat()}.csv",
             mime="text/csv",
             icon=":material/download:",
         )
