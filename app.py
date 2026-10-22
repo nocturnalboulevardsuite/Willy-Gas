@@ -35,7 +35,7 @@ import logica
 # 1. CONFIGURACIÓN DE LA PÁGINA Y ESTILOS
 # ══════════════════════════════════════════════════════════════════════════════
 st.set_page_config(
-    page_title="Willy Gas",
+    page_title="Gas Willy",
     page_icon=":material/propane_tank:",
     layout="centered",
     initial_sidebar_state="collapsed",
