@@ -1,5 +1,5 @@
 """
-app.py — Interfaz de "Willy Gas" (Streamlit, pensada para celular).
+app.py — Interfaz de "Gas Willy" (Streamlit, pensada para celular).
 
 Ejecutar en el computador:   streamlit run app.py
 
@@ -500,7 +500,7 @@ def obtener_repo():
 acceso = _secreto("acceso")
 if acceso and acceso.get("clave"):
     if not hmac.compare_digest(str(st.query_params.get("k", "")), str(acceso["clave"])):
-        st.markdown(f"<div class='vacio'>{icono('candado')}Abra Willy Gas desde el ícono de su celular.</div>",
+        st.markdown(f"<div class='vacio'>{icono('candado')}Abra Gas Willy desde el ícono de su celular.</div>",
                     unsafe_allow_html=True)
         st.stop()
 
