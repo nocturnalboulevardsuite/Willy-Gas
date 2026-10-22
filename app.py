@@ -120,6 +120,18 @@ header[data-testid="stHeader"], footer, #MainMenu, [data-testid="stToolbar"],
 .st-key-zona_dia_despues button [data-testid="stIconMaterial"]{font-size:44px!important;}
 [class*="st-key-zona_menos_"] button, [class*="st-key-zona_mas_"] button{min-height:80px;}
 
+/* Fiado: monto gigante y botones − / + bien grandes */
+[class*="st-key-fiado_monto_"] [data-testid="stNumberInputContainer"],
+[class*="st-key-fiado_monto_"] [data-baseweb="input"]{min-height:100px!important; border-width:3px!important; border-radius:22px!important;}
+[class*="st-key-fiado_monto_"] .stNumberInput input{font-size:46px!important; font-weight:700!important;
+  height:94px!important; text-align:center!important;}
+[class*="st-key-fiado_monto_"] [data-testid="stNumberInputStepDown"],
+[class*="st-key-fiado_monto_"] [data-testid="stNumberInputStepUp"]{display:none!important;}
+[class*="st-key-zona_montomenos_"] button, [class*="st-key-zona_montomas_"] button{min-height:96px!important;}
+[class*="st-key-zona_montomenos_"] button p, [class*="st-key-zona_montomas_"] button p{font-size:26px!important;}
+[class*="st-key-zona_montomenos_"] button [data-testid="stIconMaterial"],
+[class*="st-key-zona_montomas_"] button [data-testid="stIconMaterial"]{font-size:52px!important;}
+
 /* Botón "Agregar pedido": fijo abajo y extra grande */
 .st-key-zona_agregar{
   position:fixed; left:12px; right:12px; bottom:calc(12px + env(safe-area-inset-bottom));
@@ -650,6 +662,13 @@ def cb_abrir_fiado(pedido_id: int) -> None:
     _cerrar_paneles()
     st.session_state.fiado_id = pedido_id
     st.session_state.deshacer = None
+    st.session_state.pop(f"monto_{pedido_id}", None)
+
+
+def cb_monto_paso(pedido_id: int, delta: int) -> None:
+    clave = f"monto_{pedido_id}"
+    actual = int(st.session_state.get(clave) or 0)
+    st.session_state[clave] = max(0, actual + delta)
 
 
 def cb_cerrar_fiado() -> None:
@@ -1042,13 +1061,18 @@ def tarjeta_pedido(p: dict) -> None:
         if st.session_state.borrar_id == pid:
             confirmar_borrado(pid, "¿Borrar este pedido?")
         elif st.session_state.fiado_id == pid:
-            # --- Menú rápido de fiado ---
-            st.number_input(
-                ":material/payments: ¿Cuánto debe?",
-                min_value=0, step=1000,
-                value=logica.valor_pedido(p, PRECIOS),
-                key=f"monto_{pid}",
-            )
+            # --- Menú rápido de fiado: monto grande con − y + gigantes ---
+            st.session_state.setdefault(f"monto_{pid}", logica.valor_pedido(p, PRECIOS))
+            with st.container(key=f"fiado_monto_{pid}"):
+                st.number_input(":material/payments: ¿Cuánto debe?", min_value=0, step=1000,
+                                key=f"monto_{pid}")
+                menos, mas = st.columns(2)
+                with menos:
+                    boton("1.000", f"zona_montomenos_{pid}", ":material/remove:",
+                          on_click=cb_monto_paso, args=(pid, -1000), help="Restar $1.000")
+                with mas:
+                    boton("1.000", f"zona_montomas_{pid}", ":material/add:",
+                          on_click=cb_monto_paso, args=(pid, +1000), help="Sumar $1.000")
             st.date_input(
                 ":material/calendar_today: ¿Cuándo cobrar?",
                 value=hoy() + timedelta(days=7),
