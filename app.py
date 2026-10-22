@@ -88,7 +88,8 @@ header[data-testid="stHeader"], footer, #MainMenu, [data-testid="stToolbar"],
 .stDownloadButton button [data-testid="stIconMaterial"]{font-size:30px!important; color:inherit!important;}
 .stButton button [data-testid="stMarkdownContainer"],
 .stLinkButton a [data-testid="stMarkdownContainer"]{overflow:visible!important; max-width:none!important;}
-.stButton button p, .stLinkButton a p{white-space:normal!important; text-overflow:clip!important;}
+.stButton button p, .stLinkButton a p{white-space:normal!important; text-overflow:clip!important;
+  overflow-wrap:normal!important; word-break:normal!important; hyphens:none!important;}
 .stButton button:active{transform:scale(.98);}
 .stButton button:focus-visible, .stLinkButton a:focus-visible{
   outline:3px solid var(--azul)!important; outline-offset:2px;
@@ -105,6 +106,8 @@ header[data-testid="stHeader"], footer, #MainMenu, [data-testid="stToolbar"],
 }
 /* Borrar: rojo suave; Confirmar borrado: rojo lleno */
 [class*="st-key-zona_borrar_"] button{color:var(--rojo)!important; border-color:#EBC3BF!important;}
+[class*="st-key-zona_nocobro_"] button{color:#7A2A20!important; background:#FBEDEB!important; border-color:#F0CFCA!important;}
+[class*="st-key-zona_pospone_"] button{color:#6B4400!important; background:#FFF4DC!important; border-color:#F2DDB0!important;}
 [class*="st-key-zona_si_"] button{
   background:var(--rojo)!important; border-color:var(--rojo)!important; color:#fff!important;
 }
@@ -193,6 +196,46 @@ header[data-testid="stHeader"], footer, #MainMenu, [data-testid="stToolbar"],
 [data-testid="stExpander"]{background:var(--papel); border-radius:18px!important; border:none!important;}
 [data-testid="stExpander"] summary p{font-size:20px!important; font-weight:700!important;}
 
+/* ---------- Celular en modo oscuro: se fuerza todo claro y legible ---------- */
+:root{color-scheme:light only;}
+.stApp [data-testid="stMarkdownContainer"], .stApp [data-testid="stCaptionContainer"],
+[data-testid="stExpander"] summary, [data-testid="stExpander"] summary *{color:var(--tinta);}
+.stButton [data-testid="stMarkdownContainer"], .stLinkButton [data-testid="stMarkdownContainer"],
+.stDownloadButton [data-testid="stMarkdownContainer"]{color:inherit!important;}
+.stApp input{color:var(--tinta)!important; -webkit-text-fill-color:var(--tinta)!important;}
+.stApp input::placeholder{color:#8A939C!important; -webkit-text-fill-color:#8A939C!important;}
+[data-testid="stDateInputField"], [data-testid="stDateInputField"] *{color:var(--tinta)!important;}
+[data-testid="stNumberInputContainer"] button{background:#F3F5F7!important; color:var(--tinta)!important;}
+
+/* Calendario: fondo blanco, números oscuros y gruesos, día elegido en azul */
+[data-testid="stDateInputCalendar"], [data-baseweb="calendar"], [data-baseweb="datepicker"]{
+  background:#FFFFFF!important; color:var(--tinta)!important;
+  border:2px solid var(--linea)!important; border-radius:20px!important;
+  box-shadow:0 14px 34px rgba(0,0,0,.28)!important;
+}
+[data-testid="stDateInputCalendar"] *, [data-baseweb="calendar"] *{color:var(--tinta)!important;}
+[data-testid="stDateInputCalendar"] [role="gridcell"] > div,
+[data-baseweb="calendar"] [role="gridcell"] > div{font-weight:700!important; border-radius:12px!important;}
+[data-testid="stDateInputCalendar"] [data-disabled="true"],
+[data-testid="stDateInputCalendar"] [data-outside-month="true"],
+[data-baseweb="calendar"] [aria-disabled="true"], [data-baseweb="calendar"] [aria-disabled="true"] *{
+  color:#B9C0C7!important; font-weight:400!important;
+}
+[data-testid="stDateInputCalendar"] [data-today="true"]{box-shadow:inset 0 0 0 2px var(--azul)!important;}
+[data-testid="stDateInputCalendar"] [data-selected="true"],
+[data-baseweb="calendar"] [aria-selected="true"]{background:var(--azul)!important; color:#FFFFFF!important;}
+[data-baseweb="calendar"] [aria-selected="true"] *{color:#FFFFFF!important;}
+[data-testid="stDateInputCalendar"] header button svg, [data-baseweb="calendar"] button svg{fill:var(--tinta)!important;}
+[role="listbox"], [role="listbox"] [role="option"]{background:#FFFFFF!important; color:var(--tinta)!important; font-size:20px!important;}
+[role="listbox"] [role="option"][aria-selected="true"]{background:#E6EDF6!important;}
+
+/* Historial del día */
+[class*="st-key-hist_"]{background:var(--papel); border-radius:22px; padding:14px 16px!important; gap:.4rem!important;}
+[class*="st-key-hf_"]{border-top:1.5px solid var(--linea); padding-top:10px!important;}
+[class*="st-key-hf_"] [class*="st-key-zona_borrar_"] button{min-height:64px;}
+[class*="st-key-hf_"] [data-testid="stColumn"]:last-child,
+[class*="st-key-hf_"] [data-testid="column"]:last-child{flex:0 0 76px!important;}
+
 /* ---------- Textos ---------- */
 .stApp .ico{width:22px; height:22px; vertical-align:-4px; margin-right:6px;}
 .stApp .marca{display:flex; align-items:center; gap:12px;}
@@ -228,6 +271,15 @@ header[data-testid="stHeader"], footer, #MainMenu, [data-testid="stToolbar"],
 .stApp .guardado{color:var(--verde); font-size:17px; font-weight:700;}
 .stApp .fila-pedido{font-size:20px; line-height:1.35;}
 .stApp .fila-pedido b{font-size:21px;}
+.stApp .grupo{font-size:22px; font-weight:700; display:flex; align-items:center; gap:10px; margin:0 0 10px;}
+.stApp .grupo .cuenta{margin-left:auto; font-size:20px; color:var(--suave);}
+.stApp .barra{width:8px; height:26px; border-radius:4px; flex:none;}
+.stApp .hist{font-size:19px; line-height:1.35; color:var(--tinta);}
+.stApp .hist b{font-size:21px;}
+.stApp .hist .monto{font-size:22px; font-weight:700;}
+.stApp .hist .gris{color:var(--suave);}
+.stApp .resumen-fiados{background:#FFF4DC; color:#6B4400; border-radius:18px; padding:14px 16px;
+  font-size:20px; font-weight:700;}
 
 /* Resumen del día: cifras grandes y claras */
 .stApp .dia-grande{font-size:30px; font-weight:700; text-align:center; line-height:1.15; margin:2px 0;}
@@ -264,6 +316,8 @@ MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
 # Estado para pedidos borrados. Se marcan en vez de desaparecer de la base,
 # así "Deshacer" funciona y el respaldo los conserva.
 ELIMINADO = getattr(db, "ELIMINADO", "eliminado")
+# Fiado que se da por perdido: sale de la lista de los que deben, pero queda en el historial.
+NO_COBRADO = getattr(db, "NO_COBRADO", "no_cobrado")
 
 
 def ahora() -> datetime:
@@ -464,6 +518,8 @@ def iniciar_estado() -> None:
         "aviso": None,            # (texto, es_error)
         "precio_ok": None,        # tamaño cuyo precio se acaba de guardar
         "editar_precio": None,    # tamaño cuyo precio se está escribiendo a mano
+        "nocobro_id": None,       # fiado que pide confirmación para "No cobrado"
+        "pospone_id": None,       # fiado que está eligiendo nueva fecha ("Sigue pendiente")
         "error_form": None,       # mensaje rojo del formulario
         "dir_nueva": "",
         "nota_nueva": "",
@@ -496,6 +552,8 @@ def _cerrar_paneles() -> None:
     st.session_state.borrar_id = None
     st.session_state.borrar_dia = None
     st.session_state.editar_precio = None
+    st.session_state.nocobro_id = None
+    st.session_state.pospone_id = None
 
 
 def _registrar_deshacer(pedidos_antes: dict | list[dict], cambios: dict, texto: str) -> None:
@@ -509,7 +567,13 @@ def _registrar_deshacer(pedidos_antes: dict | list[dict], cambios: dict, texto: 
 
 def cb_iniciar_dia() -> None:
     repo.iniciar_jornada(hoy().isoformat(), ahora().isoformat(timespec="seconds"))
-    avisar("¡Buen día! Ya puede anotar pedidos.")
+    fiados = sum(1 for p in repo.listar_pedidos() if p["estado"] == db.POR_COBRAR)
+    if fiados:
+        st.session_state.vista = "deudas"
+        avisar(f"¡Buen día! Tiene {fiados} {'fiado' if fiados == 1 else 'fiados'}. "
+               "En cada uno toque Cobrado, No cobrado o Sigue pendiente.")
+    else:
+        avisar("¡Buen día! Ya puede anotar pedidos.")
 
 
 def cb_ir_a(vista: str) -> None:
@@ -626,6 +690,54 @@ def cb_ya_pago(pedido_id: int) -> None:
         return
     _registrar_deshacer(antes, cambios, f"Cobrado: {pesos(antes['monto_deuda'])}")
     st.session_state.aviso = None
+
+
+def cb_pedir_nocobro(pedido_id: int) -> None:
+    _cerrar_paneles()
+    st.session_state.nocobro_id = pedido_id
+    st.session_state.deshacer = None
+
+
+def cb_no_cobrado(pedido_id: int) -> None:
+    st.session_state.nocobro_id = None
+    antes = repo.obtener_pedido(pedido_id)
+    if not antes:
+        return
+    cambios = {"estado": NO_COBRADO}
+    try:
+        repo.actualizar_pedido(pedido_id, cambios)
+    except Exception:
+        avisar(ERROR_RED, error=True)
+        return
+    _registrar_deshacer(antes, cambios, f"Quedó como no cobrado: {pesos(antes['monto_deuda'])}")
+    st.session_state.aviso = None
+
+
+def cb_pedir_posponer(pedido_id: int) -> None:
+    _cerrar_paneles()
+    st.session_state.pospone_id = pedido_id
+    st.session_state.deshacer = None
+
+
+def cb_posponer(pedido_id: int, dias: int) -> None:
+    st.session_state.pospone_id = None
+    antes = repo.obtener_pedido(pedido_id)
+    if not antes:
+        return
+    nueva = (hoy() + timedelta(days=dias)).isoformat()
+    cambios = {"fecha_cobro": nueva}
+    try:
+        repo.actualizar_pedido(pedido_id, cambios)
+    except Exception:
+        avisar(ERROR_RED, error=True)
+        return
+    _registrar_deshacer(antes, cambios, f"Sigue pendiente. Cobrar el {fecha_corta(nueva)}")
+    st.session_state.aviso = None
+
+
+def cb_cerrar_fiado_panel() -> None:
+    st.session_state.nocobro_id = None
+    st.session_state.pospone_id = None
 
 
 # --- Borrar un pedido (pide confirmación y se puede deshacer) ---
@@ -798,7 +910,7 @@ def navegacion() -> None:
     opciones = [
         ("pedidos", "Pedidos", ":material/list_alt:"),
         ("resumen", "Días", ":material/calendar_month:"),
-        ("deudas", "Deben", ":material/account_balance_wallet:"),
+        ("deudas", "Fiados", ":material/account_balance_wallet:"),
         ("precios", "Precios", ":material/sell:"),
     ]
     with st.container(key="navegacion"):
@@ -860,7 +972,8 @@ def pantalla_comenzar_dia(pedidos: list[dict]) -> None:
         if pendientes:
             partes.append(f"{icono('reloj')}Quedaron <b>{pendientes}</b> pedidos sin entregar.")
         if deudas:
-            partes.append(f"{icono('libreta')}Hay <b>{deudas}</b> clientes que deben.")
+            partes.append(f"{icono('libreta')}Hay <b>{deudas}</b> {'fiado' if deudas == 1 else 'fiados'} "
+                          "por revisar. Al comenzar el día se abren solos.")
         st.markdown(f"<div class='vacio'>{'<br>'.join(partes)}</div>", unsafe_allow_html=True)
 
 
@@ -980,13 +1093,15 @@ def vista_pedidos(pedidos: list[dict]) -> None:
     boton("Agregar pedido", "zona_agregar", ":material/add_circle:", on_click=cb_abrir_form)
 
 
-NOMBRE_ESTADO = {
-    db.PENDIENTE: ("Por entregar", "#56616E"),
-    db.ENTREGADO: ("Entregado", "#1B7A45"),
-    db.NO_ENTREGADO: ("No entregado", "#56616E"),
-    db.POR_COBRAR: ("Fiado", "#8F5B00"),
-    db.PAGADO: ("Fiado ya pagado", "#1B7A45"),
-}
+# Grupos del historial del día, en el orden en que se muestran
+GRUPOS_HISTORIAL = [
+    (db.ENTREGADO, "Entregados", "#1B7A45"),
+    (db.NO_ENTREGADO, "No entregados", "#B3261E"),
+    (db.POR_COBRAR, "Fiados por cobrar", "#C98A00"),
+    (db.PAGADO, "Fiados ya cobrados", "#1B7A45"),
+    (NO_COBRADO, "Fiados no cobrados", "#56616E"),
+    (db.PENDIENTE, "Por entregar", "#1D4C86"),
+]
 
 
 def selector_dia() -> date:
@@ -1009,6 +1124,68 @@ def selector_dia() -> date:
     return st.session_state.dia_resumen or hoy()
 
 
+def _texto_historial(p: dict, estado: str) -> str:
+    """Una línea del historial: dirección, cilindros y lo que pasó con la plata."""
+    cil = ", ".join(f"{n} × {t} kg" for t, n in logica.cilindros_de(p).items())
+    nota = f" <span class='gris'>({esc(p['nota'])})</span>" if p.get("nota") else ""
+    hora = p["creado_en"][11:16]
+    if estado == db.ENTREGADO:
+        detalle = f"<span class='monto'>{pesos(p.get('monto_venta') or logica.valor_pedido(p, PRECIOS))}</span>"
+    elif estado == db.POR_COBRAR:
+        detalle = (f"<span class='monto'>{pesos(p['monto_deuda'])}</span> "
+                   f"<span class='gris'>cobrar el {fecha_corta(p['fecha_cobro'])}</span>")
+    elif estado == db.PAGADO:
+        detalle = (f"<span class='monto'>{pesos(p['monto_deuda'])}</span> "
+                   f"<span class='gris'>cobrado el {fecha_corta(p['fecha_pago'])}</span>")
+    elif estado == NO_COBRADO:
+        detalle = f"<span class='monto'>{pesos(p['monto_deuda'])}</span> <span class='gris'>no se cobró</span>"
+    else:
+        detalle = f"<span class='gris'>{pesos(logica.valor_pedido(p, PRECIOS))}</span>"
+    return (f"<div class='hist'><b>{esc(p['direccion'])}</b>{nota}<br>"
+            f"{cil} <span class='gris'>a las {hora}</span><br>{detalle}</div>")
+
+
+def historial_del_dia(pedidos: list[dict], dia_iso: str) -> None:
+    del_dia = [p for p in pedidos if p["fecha_jornada"] == dia_iso]
+    cobros = [p for p in pedidos if p["estado"] == db.PAGADO
+              and (p.get("fecha_pago") or "") == dia_iso and p["fecha_jornada"] != dia_iso]
+
+    st.markdown("<p class='titulo-seccion'>Historial del día</p>", unsafe_allow_html=True)
+    if not del_dia and not cobros:
+        st.markdown("<div class='vacio'>Este día no tiene pedidos.</div>", unsafe_allow_html=True)
+        return
+
+    for estado, titulo, color in GRUPOS_HISTORIAL:
+        grupo = [p for p in del_dia if p["estado"] == estado]
+        if not grupo:
+            continue
+        with st.container(key=f"hist_{estado}"):
+            st.markdown(f"<p class='grupo'><span class='barra' style='background:{color}'></span>"
+                        f"{titulo}<span class='cuenta'>{len(grupo)}</span></p>", unsafe_allow_html=True)
+            for p in grupo:
+                pid = p["id"]
+                with st.container(key=f"hf_{pid}"):
+                    if st.session_state.borrar_id == pid:
+                        st.markdown(_texto_historial(p, estado), unsafe_allow_html=True)
+                        confirmar_borrado(pid, "¿Borrar este pedido?")
+                        continue
+                    texto, accion = st.columns([3, 1])
+                    with texto:
+                        st.markdown(_texto_historial(p, estado), unsafe_allow_html=True)
+                    with accion:
+                        boton("", f"zona_borrar_{pid}", ":material/delete:",
+                              on_click=cb_pedir_borrar, args=(pid,), help="Borrar este pedido")
+
+    if cobros:
+        with st.container(key="hist_cobros"):
+            st.markdown(f"<p class='grupo'><span class='barra' style='background:#1B7A45'></span>"
+                        f"Fiados de otros días cobrados hoy<span class='cuenta'>{len(cobros)}</span></p>",
+                        unsafe_allow_html=True)
+            for p in cobros:
+                with st.container(key=f"hf_cobro_{p['id']}"):
+                    st.markdown(_texto_historial(p, db.PAGADO), unsafe_allow_html=True)
+
+
 def vista_resumen(pedidos: list[dict]) -> None:
     dia = selector_dia()
     dia_iso = dia.isoformat()
@@ -1022,7 +1199,7 @@ def vista_resumen(pedidos: list[dict]) -> None:
             <div class='etq'>Plata recibida</div>
             <div class='num'>{pesos(r['plata_en_mano'])}</div>
             <div class='sub'>{pesos(r['ventas_contado'])} en ventas y
-              {pesos(r['cobros_de_deudas'])} en deudas cobradas</div>
+              {pesos(r['cobros_de_deudas'])} en fiados cobrados</div>
           </div>
           <div class='cifra ambar'>
             <div class='etq'>Fiado este día</div>
@@ -1048,29 +1225,12 @@ def vista_resumen(pedidos: list[dict]) -> None:
           </div>
         </div>""")
 
-    # --- Pedidos del día, cada uno con su botón Borrar ---
+    historial_del_dia(pedidos, dia_iso)
+
+    # --- Borrar el día completo ---
     del_dia = [p for p in pedidos if p["fecha_jornada"] == dia_iso]
     if not del_dia:
         return
-    with st.expander(f"Pedidos de este día ({len(del_dia)})", icon=":material/list_alt:",
-                     expanded=st.session_state.borrar_id in {p["id"] for p in del_dia}):
-        for p in del_dia:
-            pid = p["id"]
-            nombre, color = NOMBRE_ESTADO.get(p["estado"], (p["estado"], "#56616E"))
-            cil = ", ".join(f"{n} × {t} kg" for t, n in logica.cilindros_de(p).items())
-            with st.container(key=f"fila_{pid}"):
-                st.markdown(
-                    f"<div class='fila-pedido'><b>{esc(p['direccion'])}</b><br>{cil}<br>"
-                    f"<span class='punto' style='background:{color}'></span>{nombre}</div>",
-                    unsafe_allow_html=True,
-                )
-                if st.session_state.borrar_id == pid:
-                    confirmar_borrado(pid, "¿Borrar este pedido?")
-                else:
-                    boton("Borrar pedido", f"zona_borrar_{pid}", ":material/delete:",
-                          on_click=cb_pedir_borrar, args=(pid,))
-
-    # --- Borrar el día completo ---
     if st.session_state.borrar_dia == dia_iso:
         fiados = sum(1 for p in del_dia if p["estado"] == db.POR_COBRAR)
         n = len(del_dia)
@@ -1092,15 +1252,21 @@ def vista_resumen(pedidos: list[dict]) -> None:
 
 def vista_deudas(pedidos: list[dict]) -> None:
     deudas = sorted((p for p in pedidos if p["estado"] == db.POR_COBRAR),
-                    key=lambda p: (p["fecha_cobro"], p["id"]))
+                    key=lambda p: (p["fecha_cobro"] or "9999", p["id"]))
     total = sum(p["monto_deuda"] for p in deudas)
-    st.markdown(f"<p class='titulo-seccion'>Le deben: {pesos(total)}</p>", unsafe_allow_html=True)
+    st.markdown(f"<p class='titulo-seccion'>Fiados: {pesos(total)}</p>", unsafe_allow_html=True)
     if not deudas:
         st.markdown(f"<div class='vacio'>{icono('check', '#1B7A45')}Nadie le debe plata.</div>",
                     unsafe_allow_html=True)
         return
 
     hoy_iso = hoy().isoformat()
+    por_revisar = sum(1 for p in deudas if p["fecha_cobro"] and p["fecha_cobro"] <= hoy_iso)
+    texto = f"{len(deudas)} {'cliente debe' if len(deudas) == 1 else 'clientes deben'}"
+    if por_revisar:
+        texto += f". {por_revisar} para cobrar hoy o atrasados"
+    st.markdown(f"<div class='resumen-fiados'>{texto}.</div>", unsafe_allow_html=True)
+
     for p in deudas:
         pid = p["id"]
         atrasado = p["fecha_cobro"] and p["fecha_cobro"] < hoy_iso
@@ -1121,10 +1287,39 @@ def vista_deudas(pedidos: list[dict]) -> None:
                 unsafe_allow_html=True,
             )
             if st.session_state.borrar_id == pid:
-                confirmar_borrado(pid, "¿Borrar esta deuda?", "Desaparece de la lista de los que deben.")
+                confirmar_borrado(pid, "¿Borrar este fiado?", "Se borra como si nunca se hubiera anotado.")
+            elif st.session_state.nocobro_id == pid:
+                st.markdown("<div class='confirmar'>¿Dejarlo como no cobrado?"
+                            "<small>Sale de la lista de fiados y queda en el historial.</small></div>",
+                            unsafe_allow_html=True)
+                si, no = st.columns(2)
+                with si:
+                    boton("Sí", f"zona_si_nocobro_{pid}", ":material/check:",
+                          on_click=cb_no_cobrado, args=(pid,))
+                with no:
+                    boton("Volver", f"zona_volver_nocobro_{pid}", ":material/arrow_back:",
+                          on_click=cb_cerrar_fiado_panel)
+            elif st.session_state.pospone_id == pid:
+                st.markdown("<p class='nombre-cil'>¿Cuándo volver a cobrar?</p>", unsafe_allow_html=True)
+                manana, semana = st.columns(2)
+                with manana:
+                    boton("Mañana", f"zona_manana_{pid}", ":material/event:",
+                          on_click=cb_posponer, args=(pid, 1))
+                with semana:
+                    boton("En 1 semana", f"zona_semana_{pid}", ":material/date_range:",
+                          on_click=cb_posponer, args=(pid, 7))
+                boton("Volver", f"zona_volver_pospone_{pid}", ":material/arrow_back:",
+                      on_click=cb_cerrar_fiado_panel)
             else:
-                boton("Ya pagó", f"zona_pago_{pid}", ":material/payments:",
+                boton("Cobrado", f"zona_pago_{pid}", ":material/payments:",
                       on_click=cb_ya_pago, args=(pid,))
+                izq, der = st.columns(2)
+                with izq:
+                    boton("No cobrado", f"zona_nocobro_{pid}", ":material/money_off:",
+                          on_click=cb_pedir_nocobro, args=(pid,))
+                with der:
+                    boton("Sigue pendiente", f"zona_pospone_{pid}", ":material/schedule:",
+                          on_click=cb_pedir_posponer, args=(pid,))
                 fila_mapa_borrar(p)
 
 
