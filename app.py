@@ -11,8 +11,7 @@ Estructura del proyecto:
                 imagenes/cilindro_15.jpg, se usa esa foto en vez del dibujo.
                 Formatos: .png .jpg .jpeg .webp
 
-Nota: los estilos ahora viven al final de la sección 1 de este archivo,
-así que estilos.py ya no se usa.
+Nota: los estilos viven en la sección 1 de este archivo; estilos.py ya no se usa.
 """
 from __future__ import annotations
 
@@ -47,7 +46,7 @@ CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap');
 
 :root{
-  --tinta:#18212B; --suave:#56616E; --fondo:#F1F3F5; --papel:#FFFFFF; --linea:#D5DBE1;
+  --tinta:#18212B; --suave:#56616E; --fondo:#EEF1F4; --papel:#FFFFFF; --linea:#D3D9DF;
   --azul:#1D4C86; --verde:#1B7A45; --rojo:#B3261E; --ambar:#8F5B00;
 }
 
@@ -61,9 +60,9 @@ html, body, .stApp, [data-testid="stAppViewContainer"]{
 header[data-testid="stHeader"], footer, #MainMenu, [data-testid="stToolbar"],
 [data-testid="stDecoration"]{display:none!important;}
 .block-container, [data-testid="stMainBlockContainer"]{
-  padding:14px 14px 130px!important; max-width:560px!important;
+  padding:12px 14px 150px!important; max-width:560px!important;
 }
-[data-testid="stVerticalBlock"]{gap:.65rem;}
+[data-testid="stVerticalBlock"]{gap:.7rem;}
 
 /* Columnas lado a lado también en el celular */
 [data-testid="stHorizontalBlock"]{flex-wrap:nowrap!important; gap:10px!important;}
@@ -77,16 +76,16 @@ header[data-testid="stHeader"], footer, #MainMenu, [data-testid="stToolbar"],
 [data-testid="stElementContainer"]:has(.stLinkButton),
 [data-testid="stElementContainer"]:has(.stDownloadButton){width:100%!important;}
 .stButton button, .stLinkButton a, .stDownloadButton button{
-  width:100%!important; min-height:64px; border-radius:16px!important;
+  width:100%!important; min-height:76px; border-radius:18px!important;
   border:2px solid var(--linea)!important; background:var(--papel)!important;
-  color:var(--tinta)!important; box-shadow:none!important; padding:8px 10px!important;
+  color:var(--tinta)!important; box-shadow:none!important; padding:8px 8px!important;
 }
 .stButton button p, .stLinkButton a p, .stDownloadButton button p{
-  font-size:20px!important; font-weight:700!important; color:inherit!important; line-height:1.15;
+  font-size:22px!important; font-weight:700!important; color:inherit!important; line-height:1.15;
 }
 .stButton button [data-testid="stIconMaterial"],
 .stLinkButton a [data-testid="stIconMaterial"],
-.stDownloadButton button [data-testid="stIconMaterial"]{font-size:28px!important; color:inherit!important;}
+.stDownloadButton button [data-testid="stIconMaterial"]{font-size:30px!important; color:inherit!important;}
 .stButton button [data-testid="stMarkdownContainer"],
 .stLinkButton a [data-testid="stMarkdownContainer"]{overflow:visible!important; max-width:none!important;}
 .stButton button p, .stLinkButton a p{white-space:normal!important; text-overflow:clip!important;}
@@ -97,101 +96,160 @@ header[data-testid="stHeader"], footer, #MainMenu, [data-testid="stToolbar"],
 
 /* Acción principal: azul */
 .st-key-zona_dia button, .st-key-zona_guardar button, .st-key-zona_agregar button{
-  background:var(--azul)!important; border-color:var(--azul)!important; color:#fff!important; min-height:72px;
+  background:var(--azul)!important; border-color:var(--azul)!important; color:#fff!important; min-height:84px;
 }
-/* Entregado / Ya pagó: verde */
+/* Entregado / Ya pagó / Guardar precio: verde */
 [class*="st-key-zona_ok_"] button, [class*="st-key-zona_pago_"] button,
-[class*="st-key-zona_confirma_"] button{
-  background:var(--verde)!important; border-color:var(--verde)!important; color:#fff!important; min-height:72px;
+[class*="st-key-zona_confirma_"] button, .st-key-zona_guardar_precio button{
+  background:var(--verde)!important; border-color:var(--verde)!important; color:#fff!important; min-height:84px;
 }
 /* Borrar: rojo suave; Confirmar borrado: rojo lleno */
 [class*="st-key-zona_borrar_"] button{color:var(--rojo)!important; border-color:#EBC3BF!important;}
 [class*="st-key-zona_si_"] button{
   background:var(--rojo)!important; border-color:var(--rojo)!important; color:#fff!important;
 }
-/* − y + del formulario */
-[class*="st-key-zona_menos_"] button, [class*="st-key-zona_mas_"] button{min-height:68px;}
-[class*="st-key-zona_menos_"] [data-testid="stIconMaterial"],
-[class*="st-key-zona_mas_"] [data-testid="stIconMaterial"]{font-size:38px!important;}
+/* − y + : íconos grandes */
+[class*="st-key-zona_menos_"] button [data-testid="stIconMaterial"],
+[class*="st-key-zona_mas_"] button [data-testid="stIconMaterial"],
+[class*="st-key-zona_bajar_"] button [data-testid="stIconMaterial"],
+[class*="st-key-zona_subir_"] button [data-testid="stIconMaterial"],
+.st-key-zona_dia_antes button [data-testid="stIconMaterial"],
+.st-key-zona_dia_despues button [data-testid="stIconMaterial"]{font-size:44px!important;}
+[class*="st-key-zona_menos_"] button, [class*="st-key-zona_mas_"] button{min-height:80px;}
 
-/* Botón "Agregar pedido" fijo abajo */
+/* Botón "Agregar pedido": fijo abajo y extra grande */
 .st-key-zona_agregar{
-  position:fixed; left:14px; right:14px; bottom:calc(14px + env(safe-area-inset-bottom));
-  z-index:999; max-width:532px; margin:0 auto; width:auto!important;
+  position:fixed; left:12px; right:12px; bottom:calc(12px + env(safe-area-inset-bottom));
+  z-index:999; max-width:536px; margin:0 auto; width:auto!important;
 }
-.st-key-zona_agregar button{min-height:76px; box-shadow:0 8px 22px rgba(24,33,43,.28)!important;}
+.st-key-zona_agregar button{
+  min-height:104px; border-radius:26px!important; box-shadow:0 10px 26px rgba(24,33,43,.30)!important;
+}
+.st-key-zona_agregar button p{font-size:28px!important;}
+.st-key-zona_agregar button [data-testid="stIconMaterial"]{font-size:42px!important;}
 
 /* Navegación: ícono arriba, texto abajo */
-.st-key-navegacion button{min-height:78px; padding:6px 2px!important;}
+.st-key-navegacion button{min-height:84px; padding:6px 2px!important;}
 .st-key-navegacion button > div > span{flex-direction:column!important; gap:2px!important;}
-.st-key-navegacion button p{font-size:16px!important; white-space:nowrap!important;}
+.st-key-navegacion button p{font-size:17px!important; white-space:nowrap!important;}
+.st-key-navegacion button [data-testid="stIconMaterial"]{font-size:32px!important;}
 .st-key-navegacion [data-testid="stBaseButton-primary"]{
   background:var(--tinta)!important; border-color:var(--tinta)!important; color:#fff!important;
 }
 
-/* ---------- Tarjetas ---------- */
-[class*="st-key-card_"]{
-  background:var(--papel); border:1.5px solid var(--linea); border-radius:20px; padding:16px!important;
-}
-[class*="st-key-card_viejo_"]{border-left:7px solid var(--ambar);}
-[class*="st-key-card_atrasado_"]{border-left:7px solid var(--rojo);}
+/* ---------- Tarjetas (sin bordes: más limpio) ---------- */
+[class*="st-key-card_"]{background:var(--papel); border-radius:22px; padding:16px!important;}
+[class*="st-key-card_viejo_"]{box-shadow:inset 7px 0 0 var(--ambar);}
+[class*="st-key-card_atrasado_"]{box-shadow:inset 7px 0 0 var(--rojo);}
+[class*="st-key-card_precio_"]{padding:12px!important; gap:.5rem!important;}
 [class*="st-key-fila_"]{border-top:1.5px solid var(--linea); padding-top:12px!important;}
 
-/* ---------- Campos de texto ---------- */
-[data-baseweb="input"]{border:2px solid var(--linea)!important; border-radius:14px!important; background:#fff!important;}
-[data-baseweb="input"]:focus-within{border-color:var(--azul)!important;}
-.stTextInput input, .stNumberInput input, .stDateInput input, [data-testid="stDateInput"] input{
-  font-size:22px!important; min-height:60px; color:var(--tinta)!important; background:#fff!important;
+/* ---------- Campos de texto ----------
+   Se cubren las dos formas que usa Streamlit para dibujar los cuadros
+   (versiones nuevas: data-testid=...Root/Container/Field; antiguas: data-baseweb). */
+[data-testid="stTextInputRootElement"], [data-testid="stNumberInputContainer"],
+[data-testid="stDateInputField"], [data-baseweb="input"]{
+  border:2px solid var(--linea)!important; border-radius:16px!important; background:#fff!important;
+  height:auto!important; min-height:66px!important;
 }
-[data-testid="stWidgetLabel"] p{font-size:18px!important; font-weight:700!important; color:var(--tinta)!important;}
-[data-testid="stExpander"]{background:var(--papel); border-radius:16px!important;}
-[data-testid="stExpander"] summary p{font-size:19px!important; font-weight:700!important;}
-[class*="st-key-card_precio_"] [data-testid="stNumberInputStepDown"],
-[class*="st-key-card_precio_"] [data-testid="stNumberInputStepUp"]{display:none!important;}
+[data-testid="stTextInputRootElement"]:focus-within, [data-testid="stNumberInputContainer"]:focus-within,
+[data-testid="stDateInputField"]:focus-within, [data-baseweb="input"]:focus-within{border-color:var(--azul)!important;}
+.stTextInput input, .stNumberInput input{
+  font-size:22px!important; height:62px!important; min-height:62px; color:var(--tinta)!important; background:#fff!important;
+}
+[data-testid="stWidgetLabel"] p{font-size:19px!important; font-weight:700!important; color:var(--tinta)!important;}
+
+/* Dirección y nombre: cuadros enormes, fáciles de tocar */
+.st-key-campos_pedido [data-testid="stTextInputRootElement"],
+.st-key-campos_pedido [data-baseweb="input"]{
+  min-height:100px!important; border-width:3px!important; border-radius:22px!important;
+}
+.st-key-campos_pedido input{font-size:28px!important; height:94px!important; padding:0 18px!important;}
+.st-key-campos_pedido [data-testid="stWidgetLabel"] p{font-size:24px!important;}
+.st-key-campos_pedido [data-testid="stWidgetLabel"] p span{font-size:30px!important;}
+
+/* Escribir precio a mano: número gigante */
+.st-key-editor_precio [data-testid="stNumberInputContainer"],
+.st-key-editor_precio [data-baseweb="input"]{min-height:112px!important; border-width:3px!important; border-radius:22px!important;}
+.st-key-editor_precio input{font-size:50px!important; font-weight:700!important;
+  height:106px!important; text-align:center!important;}
+.st-key-editor_precio [data-testid="stWidgetLabel"] p{font-size:23px!important;}
+.st-key-editor_precio [data-testid="stNumberInputStepDown"],
+.st-key-editor_precio [data-testid="stNumberInputStepUp"]{display:none!important;}
+
+/* Fecha y calendario: números y casillas grandes */
+[data-testid="stDateInputField"]{min-height:76px!important; padding:0 10px!important;}
+[data-testid="stDateInputField"] *, .stDateInput input{font-size:25px!important;}
+[data-testid="stDateInputCalendarButton"] svg{width:34px!important; height:34px!important;}
+[data-testid="stDateInputCalendar"], [data-baseweb="calendar"]{padding:10px!important;}
+[data-testid="stDateInputCalendar"] *, [data-baseweb="calendar"] *{font-size:21px!important;}
+[data-testid="stDateInputCalendar"] [role="gridcell"], [data-testid="stDateInputCalendar"] [role="gridcell"] > *,
+[data-baseweb="calendar"] [role="gridcell"]{
+  min-width:46px!important; height:46px!important; line-height:46px!important;
+}
+[data-testid="stDateInputCalendar"] [role="columnheader"]{font-size:16px!important; min-width:46px!important;}
+[data-testid="stDateInputCalendar"] svg, [data-baseweb="calendar"] svg{width:32px!important; height:32px!important;}
+
+[data-testid="stExpander"]{background:var(--papel); border-radius:18px!important; border:none!important;}
+[data-testid="stExpander"] summary p{font-size:20px!important; font-weight:700!important;}
 
 /* ---------- Textos ---------- */
 .stApp .ico{width:22px; height:22px; vertical-align:-4px; margin-right:6px;}
-.stApp .marca{display:flex; align-items:center; gap:12px; margin-bottom:4px;}
-.stApp .marca .nombre{font-size:30px; font-weight:700; line-height:1;}
+.stApp .marca{display:flex; align-items:center; gap:12px;}
+.stApp .marca .nombre{font-size:28px; font-weight:700; line-height:1;}
 .stApp .fecha-hoy{font-size:18px; color:var(--suave); margin:4px 0 0;}
-.stApp .titulo-seccion{font-size:25px; font-weight:700; margin:6px 0 2px;}
-.stApp .subtitulo{font-size:17px; color:var(--suave); margin:0;}
-.stApp .direccion{font-size:24px; font-weight:700; line-height:1.25; margin:0 0 4px;}
-.stApp .nota{font-size:19px; color:var(--suave); margin:0 0 6px;}
-.stApp .meta{font-size:18px; color:var(--suave); margin:8px 0 2px; display:flex; flex-wrap:wrap; gap:4px 16px;}
+.stApp .titulo-seccion{font-size:26px; font-weight:700; margin:4px 0 0;}
+.stApp .subtitulo{font-size:18px; color:var(--suave); margin:0;}
+.stApp .direccion{font-size:25px; font-weight:700; line-height:1.25; margin:0 0 4px;}
+.stApp .nota{font-size:20px; color:var(--suave); margin:0 0 6px;}
+.stApp .meta{font-size:19px; color:var(--suave); margin:8px 0 2px; display:flex; flex-wrap:wrap; gap:4px 18px;}
 .stApp .meta span{white-space:nowrap;}
 .stApp .etiqueta-vieja{color:var(--ambar); font-weight:700;}
 .stApp .cilindros{display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 2px;}
 .stApp .chip{display:inline-flex; align-items:center; gap:8px; background:var(--fondo);
-  border-radius:14px; padding:6px 14px 6px 8px; font-size:20px; font-weight:700;}
-.stApp .fila-cil{display:flex; align-items:flex-end; gap:14px; margin:10px 0 8px;}
-.stApp .nombre-cil{font-size:24px; font-weight:700; line-height:1.1;}
-.stApp .precio-cil{font-size:18px; color:var(--suave);}
-.stApp .contador{font-size:40px; font-weight:700; text-align:center; line-height:64px;
-  background:var(--papel); border:2px solid var(--linea); border-radius:16px; color:var(--suave);}
-.stApp .contador.activo{color:var(--azul); border-color:var(--azul);}
-.stApp .total-form{font-size:28px; font-weight:700; text-align:center; margin:6px 0;}
-.stApp .aviso{background:#E5F2EA; color:#12502D; border-radius:16px; padding:14px 16px;
-  font-size:20px; font-weight:700;}
+  border-radius:14px; padding:6px 14px 6px 8px; font-size:21px; font-weight:700;}
+.stApp .fila-cil{display:flex; align-items:center; gap:14px; margin:10px 0 6px;}
+.stApp .nombre-cil{font-size:25px; font-weight:700; line-height:1.1;}
+.stApp .precio-cil{font-size:19px; color:var(--suave);}
+.stApp .contador{font-size:44px; font-weight:700; text-align:center; line-height:76px;
+  background:var(--papel); border-radius:18px; color:var(--suave);}
+.stApp .contador.activo{color:var(--azul); box-shadow:inset 0 0 0 3px var(--azul);}
+.stApp .total-form{font-size:30px; font-weight:700; text-align:center; margin:6px 0;}
+.stApp .aviso{background:#E2F1E8; color:#12502D; border-radius:18px; padding:16px;
+  font-size:21px; font-weight:700;}
 .stApp .aviso.error{background:#FBE8E6; color:var(--rojo);}
-.stApp .vacio{text-align:center; color:var(--suave); font-size:20px; padding:30px 16px;
-  border:2px dashed var(--linea); border-radius:20px; line-height:1.5;}
-.stApp .confirmar{background:#FBE8E6; color:var(--rojo); border-radius:16px; padding:14px;
-  font-size:21px; font-weight:700; text-align:center;}
-.stApp .confirmar small{display:block; font-size:17px; font-weight:400; color:var(--tinta); margin-top:4px;}
-.stApp .grilla{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:8px;}
-.stApp .dato{background:var(--papel); border:1.5px solid var(--linea); border-radius:18px; padding:14px;}
-.stApp .dato.ancho{grid-column:span 2;}
-.stApp .dato .icono img{width:28px; height:28px;}
-.stApp .dato .valor{font-size:27px; font-weight:700; margin-top:4px;}
-.stApp .dato .texto{font-size:16px; color:var(--suave);}
-.stApp .dato.verde .valor{color:var(--verde);} .stApp .dato.ambar .valor{color:var(--ambar);} .stApp .dato.rojo .valor{color:var(--rojo);}
-.stApp .monto-deuda{font-size:34px; font-weight:700; color:var(--rojo); margin:2px 0;}
+.stApp .vacio{text-align:center; color:var(--suave); font-size:21px; padding:30px 16px;
+  border:2px dashed var(--linea); border-radius:22px; line-height:1.5;}
+.stApp .confirmar{background:#FBE8E6; color:var(--rojo); border-radius:18px; padding:16px;
+  font-size:22px; font-weight:700; text-align:center;}
+.stApp .confirmar small{display:block; font-size:18px; font-weight:400; color:var(--tinta); margin-top:4px;}
+.stApp .monto-deuda{font-size:36px; font-weight:700; color:var(--rojo); margin:2px 0;}
 .stApp .punto{display:inline-block; width:14px; height:14px; border-radius:50%; margin-right:6px; vertical-align:-1px;}
-.stApp .precio-grande{font-size:36px; font-weight:700; line-height:1.1;}
-.stApp .guardado{color:var(--verde); font-size:18px; font-weight:700;}
-.stApp .fila-pedido{font-size:19px; line-height:1.35;}
-.stApp .fila-pedido b{font-size:20px;}
+.stApp .guardado{color:var(--verde); font-size:17px; font-weight:700;}
+.stApp .fila-pedido{font-size:20px; line-height:1.35;}
+.stApp .fila-pedido b{font-size:21px;}
+
+/* Resumen del día: cifras grandes y claras */
+.stApp .dia-grande{font-size:30px; font-weight:700; text-align:center; line-height:1.15; margin:2px 0;}
+.stApp .dia-grande small{display:block; font-size:18px; font-weight:400; color:var(--suave); margin-top:6px; line-height:1.3;}
+.stApp .cifras{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+.stApp .cifra{background:var(--papel); border-radius:22px; padding:16px 16px 18px;}
+.stApp .cifra.ancha{grid-column:span 2;}
+.stApp .cifra .etq{font-size:19px; color:var(--suave); font-weight:700;}
+.stApp .cifra .num{font-size:40px; font-weight:700; line-height:1.1; margin-top:4px; letter-spacing:-.01em;}
+.stApp .cifra.principal .num{font-size:50px;}
+.stApp .cifra .sub{font-size:17px; color:var(--suave); margin-top:4px;}
+.stApp .cifra.verde .num{color:var(--verde);} .stApp .cifra.ambar .num{color:var(--ambar);}
+.stApp .cifra.rojo .num{color:var(--rojo);}
+
+/* Precios: todos los cilindros en una sola pantalla */
+.stApp .celda-precio{display:flex; align-items:flex-end; justify-content:center; gap:10px;}
+.stApp .celda-precio .kg{font-size:24px; font-weight:700; color:var(--suave);}
+.stApp .precio-celda{font-size:29px; font-weight:700; line-height:1.1; text-align:center;
+  white-space:nowrap; margin:4px 0 10px; padding-bottom:4px; letter-spacing:-.01em;}
+.stApp .guardado{text-align:center;}
+.stApp .editor-cabeza{display:flex; align-items:center; gap:18px; margin-bottom:6px;}
+.stApp .editor-cabeza .valor{font-size:22px; color:var(--suave);}
 </style>
 """
 st.markdown(CSS, unsafe_allow_html=True)
@@ -252,13 +310,9 @@ _TRAZOS = {
     "calendario": '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
     "alerta": '<path d="M12 3.5 2.5 20h19z"/><path d="M12 10v4.5M12 17.2v.3"/>',
     "check": '<circle cx="12" cy="12" r="9"/><path d="m7.5 12.5 3 3 6-6.5"/>',
-    "x": '<circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/>',
     "candado": '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7.5a4 4 0 0 1 8 0V11"/>',
     "libreta": '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/>',
     "sol": '<circle cx="12" cy="12" r="4"/><path d="M12 2.5V5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/>',
-    "deshacer": '<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>',
-    "basura": '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
-    "pila": '<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/>',
 }
 
 
@@ -274,7 +328,7 @@ def icono(nombre: str, color: str = "#56616E") -> str:
     return f"<img class='ico' src='{_uri_icono(nombre, color)}' alt=''>"
 
 
-# --- Cilindros de gas: dibujo con volumen (metal, collarín, válvula, base) ---
+# --- Cilindros de gas blancos: metal con brillo, collarín, válvula y base ---
 # Ancho y alto del cuerpo según el tamaño, para que se reconozcan de un vistazo.
 _FORMAS = {5: (62, 74), 11: (74, 110), 15: (78, 132), 45: (70, 198)}
 
@@ -303,9 +357,9 @@ def _svg_cilindro(kg: int) -> str:
     return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {ancho_total} {alto_total}">
 <defs>
  <linearGradient id="{g}" x1="0" x2="1">
-  <stop offset="0" stop-color="#7A3210"/><stop offset=".16" stop-color="#C8561A"/>
-  <stop offset=".36" stop-color="#F7A866"/><stop offset=".52" stop-color="#E5712A"/>
-  <stop offset=".84" stop-color="#B0501A"/><stop offset="1" stop-color="#6E2C0E"/>
+  <stop offset="0" stop-color="#8C959E"/><stop offset=".14" stop-color="#C9D0D7"/>
+  <stop offset=".36" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#F1F3F5"/>
+  <stop offset=".84" stop-color="#C2C9D0"/><stop offset="1" stop-color="#7F8891"/>
  </linearGradient>
  <linearGradient id="{g}b" x1="0" x2="1">
   <stop offset="0" stop-color="#7A5A12"/><stop offset=".45" stop-color="#EBCB6A"/><stop offset="1" stop-color="#8A6A18"/>
@@ -314,20 +368,21 @@ def _svg_cilindro(kg: int) -> str:
   <stop offset="0" stop-color="#2B3036"/><stop offset=".4" stop-color="#7E868E"/><stop offset="1" stop-color="#262A2F"/>
  </linearGradient>
  <linearGradient id="{g}s" x1="0" y1="0" x2="0" y2="1">
-  <stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".25" stop-color="#fff" stop-opacity="0"/>
-  <stop offset=".85" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/>
+  <stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".25" stop-color="#fff" stop-opacity="0"/>
+  <stop offset=".85" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/>
  </linearGradient>
 </defs>
 <rect x="{x0 + w * .08}" y="{arriba + h - 8}" width="{w * .84}" height="16" rx="3" fill="url(#{g}p)"/>
-<rect x="{x0}" y="{arriba}" width="{w}" height="{h}" rx="{w / 2}" ry="{ry}" fill="url(#{g})"/>
+<rect x="{x0}" y="{arriba}" width="{w}" height="{h}" rx="{w / 2}" ry="{ry}" fill="url(#{g})"
+ stroke="#7F8891" stroke-width="1.2"/>
 <rect x="{x0}" y="{arriba}" width="{w}" height="{h}" rx="{w / 2}" ry="{ry}" fill="url(#{g}s)"/>
-<path d="M{x0 + 1} {arriba + h * .58} H{x0 + w - 1}" stroke="#000" stroke-opacity=".22" stroke-width="1.4"/>
-<rect x="{x0 + w * .15}" y="{eti_y}" width="{w * .7}" height="{eti_h}" rx="4" fill="#fff" fill-opacity=".94"/>
+<path d="M{x0 + 1} {arriba + h * .58} H{x0 + w - 1}" stroke="#5E6872" stroke-opacity=".45" stroke-width="1.4"/>
+<rect x="{x0 + w * .15}" y="{eti_y}" width="{w * .7}" height="{eti_h}" rx="4" fill="#1D4C86"/>
 <text x="50" y="{eti_y + eti_h * .7}" text-anchor="middle" font-family="Arial, Helvetica, sans-serif"
- font-weight="700" font-size="{letra}" fill="#18212B">{kg} kg</text>
+ font-weight="700" font-size="{letra}" fill="#FFFFFF">{kg} kg</text>
 <rect x="44" y="16" width="12" height="22" rx="2" fill="url(#{g}b)"/>
 <rect x="39" y="12" width="22" height="7" rx="3.5" fill="#3A3F45"/>
-<path d="{collar}" fill="url(#{g})" fill-rule="evenodd" stroke="#5E260B" stroke-opacity=".35"/>
+<path d="{collar}" fill="url(#{g})" fill-rule="evenodd" stroke="#6F7881" stroke-width="1.2"/>
 </svg>"""
 
 
@@ -408,9 +463,11 @@ def iniciar_estado() -> None:
         "deshacer": None,         # última acción, para poder revertirla
         "aviso": None,            # (texto, es_error)
         "precio_ok": None,        # tamaño cuyo precio se acaba de guardar
+        "editar_precio": None,    # tamaño cuyo precio se está escribiendo a mano
         "error_form": None,       # mensaje rojo del formulario
         "dir_nueva": "",
         "nota_nueva": "",
+        "dia_resumen": hoy(),     # día que se mira en la pestaña Días
         **{f"cant_{t}": 0 for t in db.TAMANOS},
     }
     for clave, valor in por_defecto.items():
@@ -438,6 +495,7 @@ def _cerrar_paneles() -> None:
     st.session_state.fiado_id = None
     st.session_state.borrar_id = None
     st.session_state.borrar_dia = None
+    st.session_state.editar_precio = None
 
 
 def _registrar_deshacer(pedidos_antes: dict | list[dict], cambios: dict, texto: str) -> None:
@@ -597,7 +655,18 @@ def cb_borrar_pedido(pedido_id: int) -> None:
     st.session_state.aviso = None
 
 
-# --- Borrar un día completo (todos sus pedidos) ---
+# --- Días: moverse entre fechas y borrar un día completo ---
+def cb_mover_dia(delta: int) -> None:
+    actual = st.session_state.get("dia_resumen") or hoy()
+    st.session_state.dia_resumen = min(hoy(), actual + timedelta(days=delta))
+    _cerrar_paneles()
+
+
+def cb_dia_hoy() -> None:
+    st.session_state.dia_resumen = hoy()
+    _cerrar_paneles()
+
+
 def cb_pedir_borrar_dia(dia_iso: str) -> None:
     _cerrar_paneles()
     st.session_state.borrar_dia = dia_iso
@@ -633,7 +702,7 @@ def cb_deshacer() -> None:
     st.session_state.deshacer = None
 
 
-# --- Precios: se guardan al instante, sin botón "Guardar" ---
+# --- Precios: − y + se guardan al instante; "Escribir" abre un cuadro grande ---
 def _guardar_config(**cambios) -> None:
     """Lee la configuración recién guardada y cambia solo lo pedido."""
     cfg = repo.leer_config()
@@ -654,13 +723,27 @@ def cb_precio_paso(tamano: int, delta: int) -> None:
     st.session_state.precio_ok = tamano
 
 
-def cb_precio_escrito(tamano: int) -> None:
-    valor = int(st.session_state.get(f"pr_{tamano}") or 0)
+def cb_abrir_editor(tamano: int) -> None:
+    _cerrar_paneles()
+    st.session_state.editar_precio = tamano
+    st.session_state.pr_edit = int(PRECIOS[tamano])
+
+
+def cb_cerrar_editor() -> None:
+    st.session_state.editar_precio = None
+
+
+def cb_guardar_editor() -> None:
+    tamano = st.session_state.editar_precio
+    if tamano is None:
+        return
+    valor = int(st.session_state.get("pr_edit") or 0)
     try:
         _guardar_config(**{f"precio_{tamano}": max(0, valor)})
     except Exception:
         avisar(ERROR_RED, error=True)
         return
+    st.session_state.editar_precio = None
     st.session_state.precio_ok = tamano
 
 
@@ -691,7 +774,7 @@ def encabezado() -> None:
     tamanos = list(db.TAMANOS)
     logo = 11 if 11 in tamanos else tamanos[0]
     html_limpio(f"""
-        <div class='marca'>{img_cilindro(logo, alto=58)}
+        <div class='marca'>{img_cilindro(logo, alto=54)}
           <div><div class='nombre'>Willy Gas</div>
           <p class='fecha-hoy'>{fecha_larga(hoy())}</p></div>
         </div>""")
@@ -731,7 +814,7 @@ def navegacion() -> None:
 
 def chips_cilindros(pedido: dict) -> str:
     chips = "".join(
-        f"<span class='chip'>{img_cilindro(t, alto=42)}{n} × {t} kg</span>"
+        f"<span class='chip'>{img_cilindro(t, alto=44)}{n} × {t} kg</span>"
         for t, n in logica.cilindros_de(pedido).items()
     )
     return f"<div class='cilindros'>{chips}</div>"
@@ -788,33 +871,32 @@ def formulario_pedido() -> None:
     for t in db.TAMANOS:
         n = st.session_state[f"cant_{t}"]
         html_limpio(f"""
-            <div class='fila-cil'>{img_cilindro(t, ancho=46)}
+            <div class='fila-cil'>{img_cilindro(t, alto=62)}
               <div><div class='nombre-cil'>{t} kg</div>
               <div class='precio-cil'>{pesos(PRECIOS[t])} cada uno</div></div>
             </div>""")
         menos, cantidad, mas = st.columns(3)
         with menos:
-            boton("", f"zona_menos_{t}", ":material/remove:", on_click=cb_cantidad, args=(t, -1),
-                  help=f"Quitar uno de {t} kg")
+            boton("", f"zona_menos_{t}", ":material/remove:", on_click=cb_cantidad, args=(t, -1))
         with cantidad:
             clase = "contador activo" if n else "contador"
             st.markdown(f"<div class='{clase}'>{n}</div>", unsafe_allow_html=True)
         with mas:
-            boton("", f"zona_mas_{t}", ":material/add:", on_click=cb_cantidad, args=(t, +1),
-                  help=f"Sumar uno de {t} kg")
+            boton("", f"zona_mas_{t}", ":material/add:", on_click=cb_cantidad, args=(t, +1))
 
-    # --- Dirección: un text_input normal deja usar el micrófono del teclado ---
-    st.text_input(
-        ":material/location_on: Dirección",
-        key="dir_nueva",
-        placeholder="Toque aquí y hable",
-        autocomplete="street-address",
-    )
-    st.text_input(
-        ":material/person: Nombre o seña (opcional)",
-        key="nota_nueva",
-        placeholder="Ej: Sra. Rosa, casa verde",
-    )
+    # --- Dirección y nombre: cuadros enormes. Se puede dictar con el micrófono ---
+    with st.container(key="campos_pedido"):
+        st.text_input(
+            ":material/location_on: Dirección",
+            key="dir_nueva",
+            placeholder="Toque aquí y hable",
+            autocomplete="street-address",
+        )
+        st.text_input(
+            ":material/person: Nombre o seña (opcional)",
+            key="nota_nueva",
+            placeholder="Ej: Sra. Rosa",
+        )
 
     total = sum(st.session_state[f"cant_{t}"] * PRECIOS[t] for t in db.TAMANOS)
     if total:
@@ -907,45 +989,62 @@ NOMBRE_ESTADO = {
 }
 
 
+def selector_dia() -> date:
+    """Fecha grande + flechas grandes. El calendario queda para saltar lejos."""
+    dia: date = st.session_state.dia_resumen or hoy()
+    sub = "Hoy" if dia == hoy() else ("Ayer" if dia == hoy() - timedelta(days=1) else str(dia.year))
+    st.markdown(f"<div class='dia-grande'>{fecha_larga(dia)}<small>{sub}</small></div>",
+                unsafe_allow_html=True)
+    antes, centro, despues = st.columns(3)
+    with antes:
+        boton("", "zona_dia_antes", ":material/chevron_left:", on_click=cb_mover_dia, args=(-1,),
+              help="Día anterior")
+    with centro:
+        boton("Hoy", "zona_dia_hoy", None, on_click=cb_dia_hoy, disabled=dia == hoy())
+    with despues:
+        boton("", "zona_dia_despues", ":material/chevron_right:", on_click=cb_mover_dia, args=(1,),
+              disabled=dia >= hoy(), help="Día siguiente")
+    st.date_input(":material/calendar_month: Buscar otra fecha", max_value=hoy(),
+                  format="DD/MM/YYYY", key="dia_resumen")
+    return st.session_state.dia_resumen or hoy()
+
+
 def vista_resumen(pedidos: list[dict]) -> None:
-    dia = st.date_input(":material/calendar_today: Ver el día", value=hoy(), max_value=hoy(),
-                        format="DD/MM/YYYY", key="dia_resumen")
+    dia = selector_dia()
     dia_iso = dia.isoformat()
     r = logica.resumen_del_dia(pedidos, dia_iso)
 
-    detalle_cil = "  ".join(f"{t} kg: {n}" for t, n in r["por_tamano"].items() if n) or "ninguno"
+    detalle_cil = "  ".join(f"{t} kg: {n}" for t, n in r["por_tamano"].items() if n) or "Ninguno"
+    deudores = r["deudores"]
     html_limpio(f"""
-        <div class='grilla'>
-          <div class='dato ancho verde'>
-            <div class='icono'><img src='{_uri_icono("billete", "#1B7A45")}' alt=''></div>
-            <div class='valor'>{pesos(r['plata_en_mano'])}</div>
-            <div class='texto'>Plata recibida ({pesos(r['ventas_contado'])} ventas
-              + {pesos(r['cobros_de_deudas'])} deudas cobradas)</div>
+        <div class='cifras'>
+          <div class='cifra ancha principal verde'>
+            <div class='etq'>Plata recibida</div>
+            <div class='num'>{pesos(r['plata_en_mano'])}</div>
+            <div class='sub'>{pesos(r['ventas_contado'])} en ventas y
+              {pesos(r['cobros_de_deudas'])} en deudas cobradas</div>
           </div>
-          <div class='dato ancho'>
-            <div class='icono'><img src='{_uri_icono("pila", "#18212B")}' alt=''></div>
-            <div class='valor'>{r['total_cilindros']} cilindros</div>
-            <div class='texto'>{detalle_cil}</div>
+          <div class='cifra ambar'>
+            <div class='etq'>Fiado este día</div>
+            <div class='num'>{pesos(r['fiado_del_dia'])}</div>
           </div>
-          <div class='dato ambar'>
-            <div class='icono'><img src='{_uri_icono("libreta", "#8F5B00")}' alt=''></div>
-            <div class='valor'>{pesos(r['fiado_del_dia'])}</div>
-            <div class='texto'>Fiado este día</div>
+          <div class='cifra rojo'>
+            <div class='etq'>Le deben en total</div>
+            <div class='num'>{pesos(r['por_cobrar_total'])}</div>
+            <div class='sub'>{deudores} {'cliente' if deudores == 1 else 'clientes'}</div>
           </div>
-          <div class='dato rojo'>
-            <div class='icono'><img src='{_uri_icono("alerta", "#B3261E")}' alt=''></div>
-            <div class='valor'>{pesos(r['por_cobrar_total'])}</div>
-            <div class='texto'>Le deben en total ({r['deudores']})</div>
+          <div class='cifra'>
+            <div class='etq'>No entregados</div>
+            <div class='num'>{r['no_entregados']}</div>
           </div>
-          <div class='dato'>
-            <div class='icono'><img src='{_uri_icono("x", "#56616E")}' alt=''></div>
-            <div class='valor'>{r['no_entregados']}</div>
-            <div class='texto'>No entregados</div>
+          <div class='cifra'>
+            <div class='etq'>Pendientes</div>
+            <div class='num'>{r['pendientes']}</div>
           </div>
-          <div class='dato'>
-            <div class='icono'><img src='{_uri_icono("reloj", "#56616E")}' alt=''></div>
-            <div class='valor'>{r['pendientes']}</div>
-            <div class='texto'>Pendientes ahora</div>
+          <div class='cifra ancha'>
+            <div class='etq'>Cilindros vendidos</div>
+            <div class='num'>{r['total_cilindros']}</div>
+            <div class='sub'>{detalle_cil}</div>
           </div>
         </div>""")
 
@@ -1029,31 +1128,49 @@ def vista_deudas(pedidos: list[dict]) -> None:
                 fila_mapa_borrar(p)
 
 
+def editor_precio(t: int) -> None:
+    """Pantalla grande solo para escribir el precio de un cilindro."""
+    with st.container(key="editor_precio"):
+        html_limpio(f"""
+            <div class='editor-cabeza'>{img_cilindro(t, alto=130)}
+              <div><div class='nombre-cil'>Cilindro {t} kg</div>
+              <div class='valor'>Ahora: {pesos(PRECIOS[t])}</div></div>
+            </div>""")
+        st.number_input("Nuevo precio", min_value=0, step=500, key="pr_edit")
+        boton("Guardar precio", "zona_guardar_precio", ":material/check:", on_click=cb_guardar_editor)
+        boton("Cancelar", "zona_cancelar_precio", ":material/close:", on_click=cb_cerrar_editor)
+
+
 def vista_precios(todos: list[dict]) -> None:
-    st.markdown("<p class='titulo-seccion'>Precios</p>"
-                "<p class='subtitulo'>Los cambios se guardan solos, al instante.</p>",
+    t_edit = st.session_state.editar_precio
+    if t_edit is not None and t_edit in PRECIOS:
+        editor_precio(t_edit)
+        return
+
+    st.markdown("<p class='subtitulo'>Toque − o + y queda guardado al tiro.</p>",
                 unsafe_allow_html=True)
-    for t in db.TAMANOS:
-        # El cuadro siempre muestra el precio guardado
-        st.session_state[f"pr_{t}"] = int(PRECIOS[t])
-        with st.container(key=f"card_precio_{t}"):
-            guardado = ("<div class='guardado'>" + icono("check", "#1B7A45") + "Guardado</div>"
-                        if st.session_state.precio_ok == t else "")
-            html_limpio(f"""
-                <div class='fila-cil'>{img_cilindro(t, ancho=62)}
-                  <div><div class='nombre-cil'>Cilindro {t} kg</div>
-                  <div class='precio-grande'>{pesos(PRECIOS[t])}</div>{guardado}</div>
-                </div>""")
-            bajar, subir = st.columns(2)
-            with bajar:
-                boton("$500", f"zona_bajar_{t}", ":material/remove:",
-                      on_click=cb_precio_paso, args=(t, -500))
-            with subir:
-                boton("$500", f"zona_subir_{t}", ":material/add:",
-                      on_click=cb_precio_paso, args=(t, +500))
-            st.number_input("Escribir otro precio", min_value=0, step=500,
-                            key=f"pr_{t}", on_change=cb_precio_escrito, args=(t,))
+    tamanos = list(db.TAMANOS)
+    for i in range(0, len(tamanos), 2):  # dos cilindros por fila: se ven todos de una
+        columnas = st.columns(2)
+        for col, t in zip(columnas, tamanos[i:i + 2]):
+            with col, st.container(key=f"card_precio_{t}"):
+                guardado = (f"<div class='guardado'>{icono('check', '#1B7A45')}Guardado</div>"
+                            if st.session_state.precio_ok == t else "")
+                html_limpio(f"""
+                    <div class='celda-precio'>{img_cilindro(t, alto=64)}
+                      <div class='kg'>{t} kg</div></div>
+                    <div class='precio-celda'>{pesos(PRECIOS[t])}</div>{guardado}""")
+                bajar, subir = st.columns(2)
+                with bajar:
+                    boton("", f"zona_bajar_{t}", ":material/remove:",
+                          on_click=cb_precio_paso, args=(t, -500), help="Bajar $500")
+                with subir:
+                    boton("", f"zona_subir_{t}", ":material/add:",
+                          on_click=cb_precio_paso, args=(t, +500), help="Subir $500")
+                boton("Escribir", f"zona_escribir_{t}", ":material/edit:",
+                      on_click=cb_abrir_editor, args=(t,))
     st.session_state.precio_ok = None
+    st.markdown("<p class='subtitulo'>Cada toque en − o + cambia $500.</p>", unsafe_allow_html=True)
 
     with st.expander("Más ajustes", icon=":material/settings:"):
         st.text_input("Ciudad para el mapa", value=CIUDAD, key="aj_ciudad")
@@ -1087,7 +1204,7 @@ if not repo.jornada_existe(hoy().isoformat()):
     pantalla_comenzar_dia(PEDIDOS)
     st.stop()
 
-if not st.session_state.mostrar_form:
+if not st.session_state.mostrar_form and st.session_state.editar_precio is None:
     navegacion()
 mostrar_avisos()
 
