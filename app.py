@@ -60,7 +60,7 @@ html, body, .stApp, [data-testid="stAppViewContainer"]{
 header[data-testid="stHeader"], footer, #MainMenu, [data-testid="stToolbar"],
 [data-testid="stDecoration"]{display:none!important;}
 .block-container, [data-testid="stMainBlockContainer"]{
-  padding:12px 14px 150px!important; max-width:560px!important;
+  padding:12px 14px 40px!important; max-width:560px!important;
 }
 [data-testid="stVerticalBlock"]{gap:.7rem;}
 
@@ -132,16 +132,66 @@ header[data-testid="stHeader"], footer, #MainMenu, [data-testid="stToolbar"],
 [class*="st-key-zona_montomenos_"] button [data-testid="stIconMaterial"],
 [class*="st-key-zona_montomas_"] button [data-testid="stIconMaterial"]{font-size:52px!important;}
 
-/* Botón "Agregar pedido": fijo abajo y extra grande */
-.st-key-zona_agregar{
-  position:fixed; left:12px; right:12px; bottom:calc(12px + env(safe-area-inset-bottom));
-  z-index:999; max-width:536px; margin:0 auto; width:auto!important;
+/* Botones "Comenzar el día" y "Agregar pedido": arriba y extra grandes */
+.st-key-zona_agregar button, .st-key-zona_dia button{
+  min-height:104px; border-radius:26px!important; box-shadow:0 8px 20px rgba(24,33,43,.22)!important;
 }
-.st-key-zona_agregar button{
-  min-height:104px; border-radius:26px!important; box-shadow:0 10px 26px rgba(24,33,43,.30)!important;
+.st-key-zona_agregar button p, .st-key-zona_dia button p{font-size:28px!important;}
+.st-key-zona_agregar button [data-testid="stIconMaterial"],
+.st-key-zona_dia button [data-testid="stIconMaterial"]{font-size:42px!important;}
+
+/* Siguiente / Agregar (cilindro) / Agregar pedido final: azul y grande */
+.st-key-zona_siguiente button, .st-key-zona_agregar_cil button{
+  background:var(--azul)!important; border-color:var(--azul)!important; color:#fff!important; min-height:96px;
 }
-.st-key-zona_agregar button p{font-size:28px!important;}
-.st-key-zona_agregar button [data-testid="stIconMaterial"]{font-size:42px!important;}
+.st-key-zona_siguiente button p, .st-key-zona_agregar_cil button p, .st-key-zona_guardar button p{font-size:27px!important;}
+.st-key-zona_guardar button{min-height:100px;}
+/* Cancelado: rojo suave. Fiado: ámbar */
+[class*="st-key-zona_cancelado_"] button{color:#7A2A20!important; background:#FBEDEB!important; border-color:#F0CFCA!important;}
+[class*="st-key-zona_fia_"] button{color:#6B4400!important; background:#FFF4DC!important; border-color:#F2DDB0!important;}
+/* Contador del cilindro elegido */
+.st-key-zona_tmp_menos button, .st-key-zona_tmp_mas button{min-height:96px;}
+.st-key-zona_tmp_menos button [data-testid="stIconMaterial"],
+.st-key-zona_tmp_mas button [data-testid="stIconMaterial"]{font-size:54px!important;}
+
+/* ---------- Cilindros tocables (el botón invisible cubre toda la tarjeta) ---------- */
+[class*="st-key-tarjcil_"]{position:relative; background:var(--papel); border-radius:24px;
+  padding:14px 8px 14px!important; border:3px solid var(--linea); gap:0!important;
+  transition:transform .12s ease, box-shadow .12s ease;}
+[class*="st-key-tarjcil_on_"]{border-color:var(--azul); background:#EAF1FA;}
+[class*="st-key-tarjcil_"]:active{transform:scale(.96);}
+[class*="st-key-tarjcil_"] [data-testid="stElementContainer"]:has(.stButton){
+  position:absolute!important; inset:0; z-index:5; margin:0!important; height:100%!important;}
+[class*="st-key-tarjcil_"] .stButton, [class*="st-key-tarjcil_"] .stButton > div{height:100%!important;}
+[class*="st-key-tarjcil_"] .stButton button{height:100%!important; background:transparent!important;
+  border:none!important; color:transparent!important; border-radius:22px!important;}
+[class*="st-key-tarjcil_"] .stButton button:focus-visible{outline:3px solid var(--azul)!important;}
+.stApp .cil-card{position:relative; text-align:center;}
+.stApp .cil-foto{height:130px; display:flex; align-items:flex-end; justify-content:center; margin-bottom:8px;}
+.stApp .cil-card .nombre-cil{font-size:28px;}
+.stApp .cil-badge{position:absolute; top:-4px; right:4px; min-width:46px; height:46px; padding:0 8px;
+  border-radius:23px; background:var(--azul); color:#fff; font-size:26px; font-weight:700; line-height:46px;}
+.stApp .cil-tocar{font-size:17px; color:var(--azul); font-weight:700; margin-top:4px;}
+
+/* ---------- Zoom al cilindro elegido ---------- */
+@keyframes zoomCil{
+  0%{transform:scale(.3) translateY(60px); opacity:0; filter:blur(6px);}
+  65%{transform:scale(1.05) translateY(0); opacity:1; filter:blur(0);}
+  100%{transform:scale(1);}
+}
+@keyframes aparecer{from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:none;}}
+.stApp .zoom-cil{background:var(--papel); border-radius:28px; padding:18px 12px 16px; text-align:center;
+  animation:zoomCil .5s cubic-bezier(.2,.8,.2,1) both; transform-origin:50% 60%;}
+.stApp .zoom-foto{height:250px; display:flex; align-items:flex-end; justify-content:center;}
+.stApp .zoom-titulo{font-size:34px; font-weight:700; margin-top:10px; line-height:1.1;}
+.stApp .entra{animation:aparecer .35s ease both;}
+.stApp .titulo-grande{font-size:34px; font-weight:700; line-height:1.1; margin:4px 0 0;}
+.stApp .resumen-pedido{background:var(--papel); border-radius:22px; padding:12px 14px;}
+.stApp .resumen-pedido .etq{font-size:19px; color:var(--suave); font-weight:700;}
+@media (prefers-reduced-motion: reduce){
+  .stApp .zoom-cil, .stApp .entra{animation:none;}
+  [class*="st-key-tarjcil_"]{transition:none;}
+}
 
 /* Navegación: ícono arriba, texto abajo */
 .st-key-navegacion button{min-height:84px; padding:6px 2px!important;}
@@ -181,6 +231,7 @@ header[data-testid="stHeader"], footer, #MainMenu, [data-testid="stToolbar"],
 }
 .st-key-campos_pedido input{font-size:28px!important; height:94px!important; padding:0 18px!important;}
 .st-key-campos_pedido [data-testid="stWidgetLabel"] p{font-size:24px!important;}
+.st-key-campo_dir [data-testid="stWidgetLabel"] p{font-size:32px!important;}
 .st-key-campos_pedido [data-testid="stWidgetLabel"] p span{font-size:30px!important;}
 
 /* Escribir precio a mano: número gigante */
@@ -535,6 +586,9 @@ def iniciar_estado() -> None:
         "error_form": None,       # mensaje rojo del formulario
         "dir_nueva": "",
         "nota_nueva": "",
+        "paso_form": "cilindros",  # cilindros | detalle | direccion
+        "cil_zoom": None,         # cilindro que se está agregando (zoom)
+        "cant_tmp": 1,            # cantidad mientras se elige en el zoom
         "dia_resumen": hoy(),     # día que se mira en la pestaña Días
         **{f"cant_{t}": 0 for t in db.TAMANOS},
     }
@@ -596,6 +650,8 @@ def cb_ir_a(vista: str) -> None:
 
 def cb_abrir_form() -> None:
     st.session_state.mostrar_form = True
+    st.session_state.paso_form = "cilindros"
+    st.session_state.cil_zoom = None
     st.session_state.deshacer = None
     _cerrar_paneles()
 
@@ -605,21 +661,75 @@ def cb_cerrar_form() -> None:
         st.session_state[f"cant_{t}"] = 0
     st.session_state.dir_nueva = ""
     st.session_state.nota_nueva = ""
+    st.session_state.pop("w_dir", None)
+    st.session_state.pop("w_nota", None)
     st.session_state.error_form = None
     st.session_state.mostrar_form = False
+    st.session_state.paso_form = "cilindros"
+    st.session_state.cil_zoom = None
 
 
-def cb_cantidad(tamano: int, delta: int) -> None:
-    clave = f"cant_{tamano}"
-    st.session_state[clave] = max(0, min(20, st.session_state[clave] + delta))
+def _recordar_textos() -> None:
+    """Guarda lo escrito en Dirección/Nombre para no perderlo al volver atrás."""
+    if "w_dir" in st.session_state:
+        st.session_state.dir_nueva = st.session_state.w_dir
+    if "w_nota" in st.session_state:
+        st.session_state.nota_nueva = st.session_state.w_nota
+
+
+def cb_elegir_cilindro(tamano: int) -> None:
+    """Toque en un cilindro: se abre el zoom para elegir cuántos."""
+    st.session_state.cil_zoom = tamano
+    actual = st.session_state[f"cant_{tamano}"]
+    st.session_state.cant_tmp = actual if actual else 1
+    st.session_state.paso_form = "detalle"
     st.session_state.error_form = None
+
+
+def cb_cantidad_tmp(delta: int) -> None:
+    st.session_state.cant_tmp = max(1, min(20, st.session_state.cant_tmp + delta))
+
+
+def cb_agregar_cilindro() -> None:
+    t = st.session_state.cil_zoom
+    if t is not None:
+        st.session_state[f"cant_{t}"] = st.session_state.cant_tmp
+    st.session_state.cil_zoom = None
+    st.session_state.paso_form = "cilindros"
+
+
+def cb_cancelar_cilindro() -> None:
+    """Cancelar: este cilindro no va en el pedido."""
+    t = st.session_state.cil_zoom
+    if t is not None:
+        st.session_state[f"cant_{t}"] = 0
+    st.session_state.cil_zoom = None
+    st.session_state.paso_form = "cilindros"
+
+
+def cb_volver_cilindros() -> None:
+    """Volver atrás: a la pantalla de cilindros sin cambiar nada."""
+    _recordar_textos()
+    st.session_state.cil_zoom = None
+    st.session_state.error_form = None
+    st.session_state.paso_form = "cilindros"
+
+
+def cb_siguiente() -> None:
+    if sum(st.session_state[f"cant_{t}"] for t in db.TAMANOS) == 0:
+        st.session_state.error_form = "Toque un cilindro para agregarlo al pedido."
+        return
+    st.session_state.error_form = None
+    st.session_state.paso_form = "direccion"
 
 
 def cb_guardar_pedido() -> None:
+    _recordar_textos()
     direccion = st.session_state.dir_nueva.strip()
     cantidades = {t: st.session_state[f"cant_{t}"] for t in db.TAMANOS}
     if sum(cantidades.values()) == 0:
-        st.session_state.error_form = "Toque el botón + en al menos un cilindro."
+        st.session_state.error_form = "Falta elegir al menos un cilindro."
+        st.session_state.paso_form = "cilindros"
         return
     if not direccion:
         st.session_state.error_form = "Falta la dirección. Toque el cuadro y hable con el micrófono."
@@ -653,7 +763,7 @@ def cb_cambiar_estado(pedido_id: int, estado: str) -> None:
     except Exception:
         avisar(ERROR_RED, error=True)
         return
-    texto = "Marcado como entregado" if estado == db.ENTREGADO else "Marcado como no entregado"
+    texto = "Marcado como entregado" if estado == db.ENTREGADO else "Marcado como cancelado"
     _registrar_deshacer(antes, cambios, texto)
     st.session_state.aviso = None
 
@@ -983,9 +1093,10 @@ def fila_mapa_borrar(p: dict) -> None:
 def pantalla_comenzar_dia(pedidos: list[dict]) -> None:
     pendientes = sum(1 for p in pedidos if p["estado"] == db.PENDIENTE)
     deudas = sum(1 for p in pedidos if p["estado"] == db.POR_COBRAR)
+    # El botón va arriba de todo, apenas abre la app
+    boton("Comenzar el día", "zona_dia", ":material/wb_sunny:", on_click=cb_iniciar_dia)
     st.markdown(f"<p class='titulo-seccion'>{icono('sol', '#8F5B00')}¡Buenos días, Willy!</p>",
                 unsafe_allow_html=True)
-    boton("Comenzar el día", "zona_dia", ":material/wb_sunny:", on_click=cb_iniciar_dia)
     if pendientes or deudas:
         partes = []
         if pendientes:
@@ -996,50 +1107,132 @@ def pantalla_comenzar_dia(pedidos: list[dict]) -> None:
         st.markdown(f"<div class='vacio'>{'<br>'.join(partes)}</div>", unsafe_allow_html=True)
 
 
-def formulario_pedido() -> None:
-    st.markdown("<p class='titulo-seccion'>Nuevo pedido</p>", unsafe_allow_html=True)
+def _cantidades_form() -> dict[int, int]:
+    return {t: st.session_state[f"cant_{t}"] for t in db.TAMANOS if st.session_state[f"cant_{t}"]}
 
-    # --- Selector de cilindros: − cantidad + (botones grandes, sin teclado) ---
-    for t in db.TAMANOS:
-        n = st.session_state[f"cant_{t}"]
-        html_limpio(f"""
-            <div class='fila-cil'>{img_cilindro(t, alto=62)}
-              <div><div class='nombre-cil'>{t} kg</div>
-              <div class='precio-cil'>{pesos(PRECIOS[t])} cada uno</div></div>
-            </div>""")
-        menos, cantidad, mas = st.columns(3)
-        with menos:
-            boton("", f"zona_menos_{t}", ":material/remove:", on_click=cb_cantidad, args=(t, -1))
-        with cantidad:
-            clase = "contador activo" if n else "contador"
-            st.markdown(f"<div class='{clase}'>{n}</div>", unsafe_allow_html=True)
-        with mas:
-            boton("", f"zona_mas_{t}", ":material/add:", on_click=cb_cantidad, args=(t, +1))
 
-    # --- Dirección y nombre: cuadros enormes. Se puede dictar con el micrófono ---
-    with st.container(key="campos_pedido"):
-        st.text_input(
-            ":material/location_on: Dirección",
-            key="dir_nueva",
-            placeholder="Toque aquí y hable",
-            autocomplete="street-address",
-        )
-        st.text_input(
-            ":material/person: Nombre o seña (opcional)",
-            key="nota_nueva",
-            placeholder="Ej: Sra. Rosa",
-        )
+def _resumen_form() -> None:
+    """Lo que lleva el pedido hasta ahora: cilindros y valor."""
+    cant = _cantidades_form()
+    if not cant:
+        return
+    chips = "".join(f"<span class='chip'>{img_cilindro(t, alto=44)}{n} × {t} kg</span>"
+                    for t, n in cant.items())
+    total = sum(n * PRECIOS[t] for t, n in cant.items())
+    html_limpio(f"""
+        <div class='resumen-pedido entra'><div class='etq'>Lleva:</div>
+          <div class='cilindros'>{chips}</div>
+          <div class='total-form'>Valor: {pesos(total)}</div>
+        </div>""")
 
-    total = sum(st.session_state[f"cant_{t}"] * PRECIOS[t] for t in db.TAMANOS)
-    if total:
-        st.markdown(f"<div class='total-form'>Valor: {pesos(total)}</div>", unsafe_allow_html=True)
 
+def _error_form() -> None:
     if st.session_state.error_form:
         st.markdown(f"<div class='aviso error'>{icono('alerta', '#B3261E')}"
                     f"{esc(st.session_state.error_form)}</div>", unsafe_allow_html=True)
 
-    boton("Guardar pedido", "zona_guardar", ":material/check:", on_click=cb_guardar_pedido)
-    boton("Cancelar", "zona_cancelar", ":material/close:", on_click=cb_cerrar_form)
+
+def paso_cilindros() -> None:
+    """Paso 1: los cilindros se tocan directamente (sin + ni −)."""
+    st.markdown("<p class='titulo-seccion'>Nuevo pedido</p>"
+                "<p class='subtitulo'>Toque el cilindro que le pidieron</p>", unsafe_allow_html=True)
+    tamanos = list(db.TAMANOS)
+    for i in range(0, len(tamanos), 2):
+        columnas = st.columns(2)
+        for col, t in zip(columnas, tamanos[i:i + 2]):
+            n = st.session_state[f"cant_{t}"]
+            with col:
+                with st.container(key=f"tarjcil_on_{t}" if n else f"tarjcil_{t}"):
+                    insignia = f"<div class='cil-badge'>{n}</div>" if n else ""
+                    pie = "Toque para cambiar" if n else "Toque para agregar"
+                    html_limpio(f"""
+                        <div class='cil-card'>{insignia}
+                          <div class='cil-foto'>{img_cilindro(t, alto=122)}</div>
+                          <div class='nombre-cil'>{t} kg</div>
+                          <div class='precio-cil'>{pesos(PRECIOS[t])}</div>
+                          <div class='cil-tocar'>{pie}</div>
+                        </div>""")
+                    st.button(f"Cilindro de {t} kg", key=f"btn_cil_{t}",
+                              on_click=cb_elegir_cilindro, args=(t,))
+
+    _resumen_form()
+    _error_form()
+    boton("Siguiente", "zona_siguiente", ":material/arrow_forward:", on_click=cb_siguiente)
+    boton("Cancelar pedido", "zona_cancelar", ":material/close:", on_click=cb_cerrar_form)
+
+
+def paso_detalle() -> None:
+    """Paso 1b: zoom al cilindro tocado. Aquí se elige cuántos lleva."""
+    t = st.session_state.cil_zoom
+    n = st.session_state.cant_tmp
+    html_limpio(f"""
+        <div class='zoom-cil'>
+          <div class='zoom-foto'>{img_cilindro(t, alto=240)}</div>
+          <div class='zoom-titulo'>Agregar {t} kg</div>
+          <div class='precio-cil'>{pesos(PRECIOS[t])} cada uno</div>
+        </div>""")
+    st.markdown("<p class='subtitulo' style='text-align:center'>¿Cuántos lleva?</p>",
+                unsafe_allow_html=True)
+    menos, cantidad, mas = st.columns(3)
+    with menos:
+        boton("", "zona_tmp_menos", ":material/remove:", on_click=cb_cantidad_tmp, args=(-1,),
+              disabled=n <= 1, help="Uno menos")
+    with cantidad:
+        st.markdown(f"<div class='contador activo'>{n}</div>", unsafe_allow_html=True)
+    with mas:
+        boton("", "zona_tmp_mas", ":material/add:", on_click=cb_cantidad_tmp, args=(+1,),
+              disabled=n >= 20, help="Uno más")
+    st.markdown(f"<div class='total-form'>{n} × {t} kg = {pesos(n * PRECIOS[t])}</div>",
+                unsafe_allow_html=True)
+
+    boton("Agregar", "zona_agregar_cil", ":material/add_shopping_cart:", on_click=cb_agregar_cilindro)
+    izq, der = st.columns(2)
+    with izq:
+        boton("Volver atrás", "zona_volver_cil", ":material/arrow_back:", on_click=cb_volver_cilindros)
+    with der:
+        boton("Cancelar", "zona_cancelar_cil", ":material/close:", on_click=cb_cancelar_cilindro)
+
+
+def paso_direccion() -> None:
+    """Paso 2: dirección (grande) y nombre, apodo o referencia."""
+    # Si vuelve a esta pantalla, aparece lo que ya había escrito
+    if "w_dir" not in st.session_state:
+        st.session_state.w_dir = st.session_state.dir_nueva
+    if "w_nota" not in st.session_state:
+        st.session_state.w_nota = st.session_state.nota_nueva
+
+    with st.container(key="campos_pedido"):
+        with st.container(key="campo_dir"):
+            st.text_input(
+                ":material/location_on: Agregar Dirección",
+                key="w_dir",
+                placeholder="Toque aquí y hable",
+                autocomplete="street-address",
+            )
+        st.text_input(
+            ":material/person: Nombre, Apodo o Referencia",
+            key="w_nota",
+            placeholder="Ej: Sra. Rosa, casa verde",
+        )
+
+    _resumen_form()
+    _error_form()
+    boton("Agregar pedido", "zona_guardar", ":material/check_circle:", on_click=cb_guardar_pedido)
+    izq, der = st.columns(2)
+    with izq:
+        boton("Volver atrás", "zona_volver_dir", ":material/arrow_back:", on_click=cb_volver_cilindros)
+    with der:
+        boton("Cancelar", "zona_cancelar", ":material/close:", on_click=cb_cerrar_form)
+
+
+def formulario_pedido() -> None:
+    paso = st.session_state.paso_form
+    if paso == "detalle" and st.session_state.cil_zoom is not None:
+        paso_detalle()
+    elif paso == "direccion":
+        paso_direccion()
+    else:
+        paso_cilindros()
 
 
 def tarjeta_pedido(p: dict) -> None:
@@ -1089,10 +1282,10 @@ def tarjeta_pedido(p: dict) -> None:
                   on_click=cb_cambiar_estado, args=(pid, db.ENTREGADO))
             izq, der = st.columns(2)
             with izq:
-                boton("No entregué", f"zona_no_{pid}", ":material/cancel:",
+                boton("Cancelado", f"zona_cancelado_{pid}", ":material/cancel:",
                       on_click=cb_cambiar_estado, args=(pid, db.NO_ENTREGADO))
             with der:
-                boton("Fiado", f"zona_fia_{pid}", ":material/payments:",
+                boton("FIADO", f"zona_fia_{pid}", ":material/payments:",
                       on_click=cb_abrir_fiado, args=(pid,))
             fila_mapa_borrar(p)
 
@@ -1102,29 +1295,28 @@ def vista_pedidos(pedidos: list[dict]) -> None:
         formulario_pedido()
         return  # mientras anota, no se muestra nada más: cero distracciones
 
+    # Agregar pedido va arriba de todo, lo primero que se ve
+    boton("Agregar pedido", "zona_agregar", ":material/add_circle:", on_click=cb_abrir_form)
+
     pendientes = [p for p in pedidos if p["estado"] == db.PENDIENTE]
-    st.markdown(f"<p class='titulo-seccion'>Por entregar: {len(pendientes)}</p>",
+    st.markdown(f"<p class='titulo-seccion'>En progreso: {len(pendientes)}</p>",
                 unsafe_allow_html=True)
     if not pendientes:
-        st.markdown(f"<div class='vacio'>{icono('check', '#1B7A45')}No hay pedidos pendientes.<br>"
-                    "Toque <b>Agregar pedido</b> (abajo) cuando lo llamen.</div>",
+        st.markdown(f"<div class='vacio'>{icono('check', '#1B7A45')}No hay pedidos en progreso.<br>"
+                    "Toque <b>Agregar pedido</b> (arriba) cuando lo llamen.</div>",
                     unsafe_allow_html=True)
     for p in pendientes:
         tarjeta_pedido(p)
-
-    # Botón flotante (el CSS lo fija abajo de la pantalla). Va al final del
-    # código para que no empuje las tarjetas, pero siempre se ve.
-    boton("Agregar pedido", "zona_agregar", ":material/add_circle:", on_click=cb_abrir_form)
 
 
 # Grupos del historial del día, en el orden en que se muestran
 GRUPOS_HISTORIAL = [
     (db.ENTREGADO, "Entregados", "#1B7A45"),
-    (db.NO_ENTREGADO, "No entregados", "#B3261E"),
+    (db.NO_ENTREGADO, "Cancelados", "#B3261E"),
     (db.POR_COBRAR, "Fiados por cobrar", "#C98A00"),
     (db.PAGADO, "Fiados ya cobrados", "#1B7A45"),
     (NO_COBRADO, "Fiados no cobrados", "#56616E"),
-    (db.PENDIENTE, "Por entregar", "#1D4C86"),
+    (db.PENDIENTE, "En progreso", "#1D4C86"),
 ]
 
 
@@ -1235,7 +1427,7 @@ def vista_resumen(pedidos: list[dict]) -> None:
             <div class='sub'>{deudores} {'cliente' if deudores == 1 else 'clientes'}</div>
           </div>
           <div class='cifra'>
-            <div class='etq'>No entregados</div>
+            <div class='etq'>Cancelados</div>
             <div class='num'>{r['no_entregados']}</div>
           </div>
           <div class='cifra'>
