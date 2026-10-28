@@ -173,6 +173,19 @@ header[data-testid="stHeader"], footer, #MainMenu, [data-testid="stToolbar"],
   border-radius:23px; background:var(--azul); color:#fff; font-size:26px; font-weight:700; line-height:46px;}
 .stApp .cil-tocar{font-size:17px; color:var(--azul); font-weight:700; margin-top:4px;}
 
+/* ---------- Botón de voz: "Apriete una vez y hable" ---------- */
+[class*="st-key-voz_"]{background:#EAF1FA; border:3px solid #B9CDE6; border-radius:22px;
+  padding:12px 12px 10px!important; gap:.3rem!important; margin-top:-4px;}
+[class*="st-key-voz_"] [data-testid="stWidgetLabel"] p{font-size:24px!important; color:var(--azul)!important;}
+[class*="st-key-voz_"] [data-testid="stAudioInput"]{min-height:96px;}
+[class*="st-key-voz_"] [data-testid="stAudioInput"] > div{min-height:92px!important; border-radius:18px!important;
+  background:#fff!important;}
+[class*="st-key-voz_"] [data-testid="stAudioInput"] button{transform:scale(1.7); margin:0 18px!important;}
+[class*="st-key-voz_"] [data-testid="stAudioInput"] button svg{color:var(--azul)!important; fill:var(--azul)!important;}
+.stApp .voz-ayuda{font-size:17px; color:var(--suave); margin:0;}
+.stApp .voz-error{font-size:19px; font-weight:700; color:var(--rojo); margin:2px 0 0;}
+.stApp .voz-ok{font-size:19px; font-weight:700; color:var(--verde); margin:2px 0 0;}
+
 /* ---------- Zoom al cilindro elegido ---------- */
 @keyframes zoomCil{
   0%{transform:scale(.3) translateY(60px); opacity:0; filter:blur(6px);}
@@ -669,6 +682,8 @@ def cb_cerrar_form() -> None:
     st.session_state.nota_nueva = ""
     st.session_state.pop("w_dir", None)
     st.session_state.pop("w_nota", None)
+    st.session_state.pop("voz_msg_dir", None)
+    st.session_state.pop("voz_msg_nota", None)
     st.session_state.error_form = None
     st.session_state.mostrar_form = False
     st.session_state.paso_form = "cilindros"
@@ -1201,6 +1216,70 @@ def paso_detalle() -> None:
         boton("Cancelar", "zona_cancelar_cil", ":material/close:", on_click=cb_cancelar_cilindro)
 
 
+# --- Dictado por voz ---------------------------------------------------------
+# Se graba con st.audio_input y se convierte a texto con el reconocimiento de
+# Google (librería SpeechRecognition, gratis, no necesita clave).
+# Requiere en requirements.txt la línea:  SpeechRecognition
+IDIOMA_VOZ = os.getenv("WILLY_IDIOMA_VOZ", "es-CL")
+
+
+def _transcribir(datos: bytes) -> str:
+    import speech_recognition as sr  # se importa aquí: si falta, la app igual abre
+    reconocedor = sr.Recognizer()
+    with sr.AudioFile(io.BytesIO(datos)) as fuente:
+        audio = reconocedor.record(fuente)
+    texto = reconocedor.recognize_google(audio, language=IDIOMA_VOZ).strip()
+    return texto[:1].upper() + texto[1:]
+
+
+def cb_voz(campo: str) -> None:
+    """Al terminar de grabar: se escribe lo dicho en el cuadro (Dirección o Nombre)."""
+    vuelta = st.session_state.get(f"voz_n_{campo}", 0)
+    grabacion = st.session_state.get(f"voz_{campo}_{vuelta}")
+    if grabacion is None:
+        return
+    st.session_state[f"voz_msg_{campo}"] = None
+    try:
+        texto = _transcribir(grabacion.getvalue())
+    except ImportError:
+        st.session_state[f"voz_msg_{campo}"] = ("error", "Falta instalar SpeechRecognition (ver requirements.txt).")
+        return
+    except Exception as e:
+        nombre = type(e).__name__
+        if nombre == "UnknownValueError":
+            msg = "No le entendí. Apriete de nuevo y hable más cerca del celular."
+        elif nombre == "RequestError":
+            msg = "Sin internet para reconocer la voz. Intente de nuevo o escriba."
+        else:
+            msg = "No se pudo reconocer la voz. Intente de nuevo o escriba."
+        st.session_state[f"voz_msg_{campo}"] = ("error", msg)
+        st.session_state[f"voz_n_{campo}"] = vuelta + 1  # botón limpio para reintentar
+        return
+    st.session_state[f"w_{campo}"] = texto
+    st.session_state[f"voz_msg_{campo}"] = ("ok", f"Escuché: «{texto}». Si está mal, apriete de nuevo.")
+    st.session_state[f"voz_n_{campo}"] = vuelta + 1  # botón limpio para la próxima vez
+
+
+def boton_voz(campo: str) -> None:
+    """Botón grande de micrófono debajo del cuadro de texto."""
+    if not hasattr(st, "audio_input"):  # Streamlit muy antiguo: solo queda escribir
+        return
+    vuelta = st.session_state.get(f"voz_n_{campo}", 0)
+    with st.container(key=f"voz_caja_{campo}"):
+        st.audio_input(
+            ":material/mic: Apriete una vez y hable",
+            key=f"voz_{campo}_{vuelta}",
+            on_change=cb_voz,
+            args=(campo,),
+        )
+        st.markdown("<p class='voz-ayuda'>Cuando termine de hablar, apriete el cuadrado rojo.</p>",
+                    unsafe_allow_html=True)
+        mensaje = st.session_state.get(f"voz_msg_{campo}")
+        if mensaje:
+            tipo, texto = mensaje
+            st.markdown(f"<p class='voz-{tipo}'>{esc(texto)}</p>", unsafe_allow_html=True)
+
+
 def paso_direccion() -> None:
     """Paso 2: dirección (grande) y nombre, apodo o referencia."""
     # Si vuelve a esta pantalla, aparece lo que ya había escrito
@@ -1214,14 +1293,16 @@ def paso_direccion() -> None:
             st.text_input(
                 ":material/location_on: Agregar Dirección",
                 key="w_dir",
-                placeholder="Toque aquí y hable",
+                placeholder="Escriba aquí o use el micrófono",
                 autocomplete="street-address",
             )
+        boton_voz("dir")
         st.text_input(
             ":material/person: Nombre, Apodo o Referencia",
             key="w_nota",
             placeholder="Ej: Sra. Rosa, casa verde",
         )
+        boton_voz("nota")
 
     _resumen_form()
     _error_form()
