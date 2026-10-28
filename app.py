@@ -173,18 +173,57 @@ header[data-testid="stHeader"], footer, #MainMenu, [data-testid="stToolbar"],
   border-radius:23px; background:var(--azul); color:#fff; font-size:26px; font-weight:700; line-height:46px;}
 .stApp .cil-tocar{font-size:17px; color:var(--azul); font-weight:700; margin-top:4px;}
 
-/* ---------- Botón de voz: "Apriete una vez y hable" ---------- */
-[class*="st-key-voz_"]{background:#EAF1FA; border:3px solid #B9CDE6; border-radius:22px;
-  padding:12px 12px 10px!important; gap:.3rem!important; margin-top:-4px;}
-[class*="st-key-voz_"] [data-testid="stWidgetLabel"] p{font-size:24px!important; color:var(--azul)!important;}
-[class*="st-key-voz_"] [data-testid="stAudioInput"]{min-height:96px;}
-[class*="st-key-voz_"] [data-testid="stAudioInput"] > div{min-height:92px!important; border-radius:18px!important;
-  background:#fff!important;}
-[class*="st-key-voz_"] [data-testid="stAudioInput"] button{transform:scale(1.7); margin:0 18px!important;}
-[class*="st-key-voz_"] [data-testid="stAudioInput"] button svg{color:var(--azul)!important; fill:var(--azul)!important;}
-.stApp .voz-ayuda{font-size:17px; color:var(--suave); margin:0;}
-.stApp .voz-error{font-size:19px; font-weight:700; color:var(--rojo); margin:2px 0 0;}
-.stApp .voz-ok{font-size:19px; font-weight:700; color:var(--verde); margin:2px 0 0;}
+/* ---------- Botón de voz: micrófono ROJO al lado derecho del cuadro ---------- */
+.stApp .etq-campo{font-size:26px; font-weight:700; color:var(--tinta); margin:6px 0 -4px;
+  display:flex; align-items:center; gap:4px;}
+.stApp .etq-campo .ico{width:30px; height:30px;}
+.stApp .etq-campo.grande{font-size:32px;}
+/* Fila: cuadro de texto (ancho) + micrófono (angosto, fijo) */
+[class*="st-key-linea_"] [data-testid="stHorizontalBlock"]{align-items:flex-start!important; gap:10px!important;}
+[class*="st-key-linea_"] [data-testid="stColumn"]:last-child,
+[class*="st-key-linea_"] [data-testid="column"]:last-child{flex:0 0 104px!important;}
+/* La caja del micrófono: roja, del mismo alto que el cuadro de texto */
+[class*="st-key-linea_"] [data-testid="stAudioInput"] > div:last-child{
+  height:100px!important; min-height:100px!important; padding:0!important; border:none!important;
+  border-radius:22px!important; background:var(--rojo)!important;
+  display:flex!important; align-items:center!important; justify-content:center!important;
+  box-shadow:0 6px 14px rgba(179,38,30,.35);
+}
+/* Se esconde la onda, el reloj y la barrita de descarga: solo queda el botón */
+[class*="st-key-linea_"] [data-testid="stAudioInput"] > div:last-child > *:not(:has([data-testid="stAudioInputActionButton"])){
+  display:none!important;
+}
+[class*="st-key-linea_"] [data-testid="stAudioInput"] > div:last-child > *:has([data-testid="stAudioInputActionButton"]){
+  width:100%!important; height:100%!important; display:flex!important; align-items:center!important;
+  justify-content:center!important; gap:0!important; margin:0!important; padding:0!important;
+}
+[class*="st-key-linea_"] [data-testid="stAudioInputActionButton"]{
+  flex:1 1 0!important; height:100px!important; min-height:100px!important; width:100%!important;
+  border-radius:22px!important; color:#fff!important; background:transparent!important; border:none!important;
+}
+[class*="st-key-linea_"] [data-testid="stAudioInputActionButton"] svg,
+[class*="st-key-linea_"] [data-testid="stAudioInputActionButton"] [data-testid="stIconMaterial"],
+[class*="st-key-linea_"] [data-testid="stAudioInputActionButton"] span{
+  width:56px!important; height:56px!important; font-size:56px!important; color:#fff!important; fill:#fff!important;
+}
+/* Grabando: la caja late y el botón de DETENER se ve enorme */
+@keyframes latido{0%,100%{box-shadow:0 0 0 0 rgba(179,38,30,.55);} 50%{box-shadow:0 0 0 12px rgba(179,38,30,0);}}
+[class*="st-key-linea_"] [data-testid="stAudioInput"]:has([aria-label="Stop recording"]) > div:last-child{
+  background:#7A1712!important; animation:latido 1.1s ease-in-out infinite;
+}
+[class*="st-key-linea_"] [aria-label="Stop recording"] svg,
+[class*="st-key-linea_"] [aria-label="Stop recording"] span{
+  width:66px!important; height:66px!important; font-size:66px!important;
+}
+.stApp .voz-pie{font-size:16px; font-weight:700; color:var(--rojo); text-align:center; margin:2px 0 0; line-height:1.1;}
+[data-testid="stColumn"]:has([aria-label="Stop recording"]) .voz-pie{font-size:0!important;}
+[data-testid="stColumn"]:has([aria-label="Stop recording"]) .voz-pie::after{content:"Detener"; font-size:18px;}
+.stApp .voz-ayuda{font-size:17px; color:var(--suave); margin:8px 0 0;}
+.stApp .voz-error{font-size:19px; font-weight:700; color:var(--rojo); margin:0;}
+.stApp .voz-ok{font-size:19px; font-weight:700; color:var(--verde); margin:0;}
+@media (prefers-reduced-motion: reduce){
+  [class*="st-key-linea_"] [data-testid="stAudioInput"] > div:last-child{animation:none!important;}
+}
 
 /* ---------- Zoom al cilindro elegido ---------- */
 @keyframes zoomCil{
@@ -1260,24 +1299,30 @@ def cb_voz(campo: str) -> None:
     st.session_state[f"voz_n_{campo}"] = vuelta + 1  # botón limpio para la próxima vez
 
 
-def boton_voz(campo: str) -> None:
-    """Botón grande de micrófono debajo del cuadro de texto."""
-    if not hasattr(st, "audio_input"):  # Streamlit muy antiguo: solo queda escribir
-        return
-    vuelta = st.session_state.get(f"voz_n_{campo}", 0)
-    with st.container(key=f"voz_caja_{campo}"):
-        st.audio_input(
-            ":material/mic: Apriete una vez y hable",
-            key=f"voz_{campo}_{vuelta}",
-            on_change=cb_voz,
-            args=(campo,),
-        )
-        st.markdown("<p class='voz-ayuda'>Cuando termine de hablar, apriete el cuadrado rojo.</p>",
-                    unsafe_allow_html=True)
-        mensaje = st.session_state.get(f"voz_msg_{campo}")
-        if mensaje:
-            tipo, texto = mensaje
-            st.markdown(f"<p class='voz-{tipo}'>{esc(texto)}</p>", unsafe_allow_html=True)
+def campo_con_voz(campo: str, titulo: str, ico: str, grande: bool, **kwargs) -> None:
+    """Cuadro de texto a la izquierda y micrófono rojo a la derecha."""
+    clase = "etq-campo grande" if grande else "etq-campo"
+    st.markdown(f"<p class='{clase}'>{icono(ico, '#18212B')}{titulo}</p>", unsafe_allow_html=True)
+    hay_voz = hasattr(st, "audio_input")  # Streamlit muy antiguo: solo queda escribir
+    with st.container(key=f"linea_{campo}"):
+        texto, mic = st.columns([3, 1]) if hay_voz else (st.container(), None)
+        with texto:
+            st.text_input(titulo, key=f"w_{campo}", label_visibility="collapsed", **kwargs)
+        if mic is not None:
+            with mic:
+                vuelta = st.session_state.get(f"voz_n_{campo}", 0)
+                st.audio_input(
+                    f"Hablar: {titulo}",
+                    key=f"voz_{campo}_{vuelta}",
+                    on_change=cb_voz,
+                    args=(campo,),
+                    label_visibility="collapsed",
+                )
+                st.markdown("<p class='voz-pie'>Hablar</p>", unsafe_allow_html=True)
+    mensaje = st.session_state.get(f"voz_msg_{campo}")
+    if mensaje:
+        tipo, texto_msg = mensaje
+        st.markdown(f"<p class='voz-{tipo}'>{esc(texto_msg)}</p>", unsafe_allow_html=True)
 
 
 def paso_direccion() -> None:
@@ -1289,20 +1334,13 @@ def paso_direccion() -> None:
         st.session_state.w_nota = st.session_state.nota_nueva
 
     with st.container(key="campos_pedido"):
-        with st.container(key="campo_dir"):
-            st.text_input(
-                ":material/location_on: Agregar Dirección",
-                key="w_dir",
-                placeholder="Escriba aquí o use el micrófono",
-                autocomplete="street-address",
-            )
-        boton_voz("dir")
-        st.text_input(
-            ":material/person: Nombre, Apodo o Referencia",
-            key="w_nota",
-            placeholder="Ej: Sra. Rosa, casa verde",
-        )
-        boton_voz("nota")
+        if hasattr(st, "audio_input"):
+            st.markdown("<p class='voz-ayuda'>Para hablar: apriete una vez el micrófono rojo, hable, "
+                        "y apriete el cuadrado para terminar.</p>", unsafe_allow_html=True)
+        campo_con_voz("dir", "Agregar Dirección", "pin", grande=True,
+                      placeholder="Escriba o hable", autocomplete="street-address")
+        campo_con_voz("nota", "Nombre, Apodo o Referencia", "persona", grande=False,
+                      placeholder="Ej: Sra. Rosa")
 
     _resumen_form()
     _error_form()
