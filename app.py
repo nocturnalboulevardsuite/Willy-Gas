@@ -194,10 +194,14 @@ header[data-testid="stHeader"], footer, #MainMenu, [data-testid="stToolbar"],
 }
 
 /* Navegación: ícono arriba, texto abajo */
-.st-key-navegacion button{min-height:84px; padding:6px 2px!important;}
-.st-key-navegacion button > div > span{flex-direction:column!important; gap:2px!important;}
-.st-key-navegacion button p{font-size:17px!important; white-space:nowrap!important;}
-.st-key-navegacion button [data-testid="stIconMaterial"]{font-size:32px!important;}
+/* Navegación: 2 filas de 2 botones grandes, fáciles de apretar con el dedo */
+.st-key-navegacion{gap:12px!important;}
+.st-key-navegacion [data-testid="stHorizontalBlock"]{gap:12px!important;}
+.st-key-navegacion button{min-height:116px!important; padding:8px 4px!important; border-width:3px!important;
+  border-radius:22px!important;}
+.st-key-navegacion button > div > span{flex-direction:column!important; gap:4px!important;}
+.st-key-navegacion button p{font-size:27px!important; white-space:nowrap!important;}
+.st-key-navegacion button [data-testid="stIconMaterial"]{font-size:46px!important;}
 .st-key-navegacion [data-testid="stBaseButton-primary"]{
   background:var(--tinta)!important; border-color:var(--tinta)!important; color:#fff!important;
 }
@@ -317,9 +321,11 @@ header[data-testid="stHeader"], footer, #MainMenu, [data-testid="stToolbar"],
 .stApp .fila-cil{display:flex; align-items:center; gap:14px; margin:10px 0 6px;}
 .stApp .nombre-cil{font-size:25px; font-weight:700; line-height:1.1;}
 .stApp .precio-cil{font-size:19px; color:var(--suave);}
+.stApp .pregunta-cant{font-size:30px; font-weight:700; text-align:center; color:var(--tinta); margin:6px 0 0;}
 .stApp .contador{font-size:44px; font-weight:700; text-align:center; line-height:76px;
   background:var(--papel); border-radius:18px; color:var(--suave);}
 .stApp .contador.activo{color:var(--azul); box-shadow:inset 0 0 0 3px var(--azul);}
+.stApp .contador.grande{font-size:64px; line-height:96px;}
 .stApp .total-form{font-size:30px; font-weight:700; text-align:center; margin:6px 0;}
 .stApp .aviso{background:#E2F1E8; color:#12502D; border-radius:18px; padding:16px;
   font-size:21px; font-weight:700;}
@@ -1043,14 +1049,16 @@ def navegacion() -> None:
         ("precios", "Precios", ":material/sell:"),
     ]
     with st.container(key="navegacion"):
-        columnas = st.columns(len(opciones))
-        for col, (clave, texto, ico) in zip(columnas, opciones):
-            with col:
-                st.button(
-                    texto, key=f"nav_{clave}", icon=ico,
-                    type="primary" if vista == clave else "secondary",
-                    on_click=cb_ir_a, args=(clave,),
-                )
+        # Dos filas de dos: cada botón es el doble de ancho y más fácil de apretar
+        for i in range(0, len(opciones), 2):
+            columnas = st.columns(2)
+            for col, (clave, texto, ico) in zip(columnas, opciones[i:i + 2]):
+                with col:
+                    st.button(
+                        texto, key=f"nav_{clave}", icon=ico,
+                        type="primary" if vista == clave else "secondary",
+                        on_click=cb_ir_a, args=(clave,),
+                    )
 
 
 def chips_cilindros(pedido: dict) -> str:
@@ -1171,14 +1179,14 @@ def paso_detalle() -> None:
           <div class='zoom-titulo'>Agregar {t} kg</div>
           <div class='precio-cil'>{pesos(PRECIOS[t])} cada uno</div>
         </div>""")
-    st.markdown("<p class='subtitulo' style='text-align:center'>¿Cuántos lleva?</p>",
+    st.markdown("<p class='pregunta-cant'>¿Cuántos lleva?</p>",
                 unsafe_allow_html=True)
     menos, cantidad, mas = st.columns(3)
     with menos:
         boton("", "zona_tmp_menos", ":material/remove:", on_click=cb_cantidad_tmp, args=(-1,),
               disabled=n <= 1, help="Uno menos")
     with cantidad:
-        st.markdown(f"<div class='contador activo'>{n}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='contador activo grande'>{n}</div>", unsafe_allow_html=True)
     with mas:
         boton("", "zona_tmp_mas", ":material/add:", on_click=cb_cantidad_tmp, args=(+1,),
               disabled=n >= 20, help="Uno más")
